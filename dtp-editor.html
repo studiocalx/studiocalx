@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A4自動組版システム | リアルタイム入力デモ</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --bg-card: #1e1e1e;
+      --accent-gold: #c5a059;
+      --text-main: #f0f0f0;
+      --text-sub: #a0a0a0;
+      --border-color: #333333;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Noto Sans JP', sans-serif;
+      padding: 1.5rem;
+      font-size: 14px;
+    }
+
+    .app-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .app-title { font-size: 1.5rem; font-weight: 700; color: var(--accent-gold); }
+    .app-desc { color: var(--text-sub); font-size: 0.85rem; }
+
+    /* 左右2分割ワークスペース */
+    .workspace {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 1.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .workspace { grid-template-columns: 1fr; }
+    }
+
+    /* 左側：入力フォームパネル */
+    .form-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .form-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.4rem;
+      margin-bottom: 1rem;
+    }
+    .form-group {
+      margin-bottom: 0.8rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-sub);
+      margin-bottom: 0.25rem;
+    }
+    .form-control {
+      width: 100%;
+      background: #111;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-gold);
+    }
+    textarea.form-control {
+      resize: vertical;
+      height: 60px;
+    }
+
+    /* 右側：A4プレビュー領域 */
+    .preview-panel {
+      background: #000;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* A4紙面（絶対寸法・リアルタイム描画ターゲット） */
+    .a4-sheet {
+      background: #ffffff;
+      color: #000000;
+      width: 780px;
+      min-height: 550px;
+      padding: 10px;
+      font-family: 'Noto Sans JP', sans-serif;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+      border: 2px solid #003366;
+      font-size: 11px;
+    }
+
+    /* マイソク用内部スタイル */
+    .maisoku-header { grid-column: 1 / -1; background: #003366; color: #fff; padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; }
+    .maisoku-title { font-size: 18px; font-weight: 900; letter-spacing: 1px; }
+    .maisoku-subtag { background: #fff; color: #003366; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 2px; }
+    
+    .maisoku-left { display: flex; flex-direction: column; gap: 6px; }
+    .maisoku-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .maisoku-box { border: 1px solid #003366; background: #f9f9f9; }
+    .maisoku-box-title { background: #003366; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; text-align: center; }
+    .maisoku-img { width: 100%; height: 110px; object-fit: cover; display: block; }
+    .maisoku-madori { width: 100%; height: 130px; object-fit: contain; background: #fff; padding: 4px; display: block; }
+    
+    .maisoku-info-block { border: 1px solid #003366; padding: 6px; background: #f0f4f8; }
+    .maisoku-info-title { font-weight: 700; color: #003366; border-bottom: 1px solid #003366; margin-bottom: 4px; padding-bottom: 2px; font-size: 10px; }
+    .maisoku-info-text { font-size: 10px; line-height: 1.4; white-space: pre-wrap; }
+
+    .maisoku-right-table { width: 100%; border-collapse: collapse; border: 1px solid #003366; font-size: 10px; }
+    .maisoku-right-table th { background: #003366; color: #ffffff; padding: 3px 5px; font-weight: 500; text-align: center; width: 24%; border: 1px solid #003366; white-space: nowrap; }
+    .maisoku-right-table td { padding: 3px 5px; border: 1px solid #003366; background: #fff; color: #000; }
+    .price-cell { font-size: 20px; font-weight: 900; color: #d32f2f; text-align: right; padding-right: 8px !important; }
+
+    .maisoku-footer { grid-column: 1 / -1; border: 2px solid #003366; background: #fff; padding: 6px 10px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; align-items: center; }
+    .company-name { font-size: 16px; font-weight: 900; color: #003366; }
+    .company-sub { font-size: 9px; color: #333; }
+    .contact-box { background: #003366; color: #fff; text-align: center; padding: 4px; border-radius: 2px; }
+    .contact-tel { font-size: 14px; font-weight: 900; }
+
+    .btn-print {
+      width: 100%;
+      background: var(--accent-gold);
+      color: #000;
+      border: none;
+      padding: 0.8rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .btn-print:hover { background: #d4af66; }
+  </style>
+</head>
+<body>
+
+  <header class="app-header">
+    <h1 class="app-title">レスポンシブDTP：A4自動組版エディタ</h1>
+    <p class="app-desc">左側のフォームに入力すると、右側のA4販売図面（マイソク）がリアルタイムに組み上がります</p>
+  </header>
+
+  <a href="pop.html" class="demo-link-btn" style="background:#444; color:#fff; margin-left:10px;">← デモポータルへ戻る</a>
+  </header>
+
+  <div class="workspace">
+
+    <!-- 1. 左側：操作フォーム -->
+    <div class="form-panel">
+      <div class="form-section-title">物件基本情報</div>
+      
+      <div class="form-group">
+        <label>物件タイトル</label>
+        <input type="text" id="in-title" class="form-control" value="月寒東1条16丁目 戸建">
+      </div>
+
+      <div class="form-group">
+        <label>アピールタグ</label>
+        <input type="text" id="in-tag" class="form-control" value="リフォーム済・即入居可">
+      </div>
+
+      <div class="form-group">
+        <label>販売価格（万円）</label>
+        <input type="text" id="in-price" class="form-control" value="2,398">
+      </div>
+
+      <div class="form-group">
+        <label>最寄駅・交通</label>
+        <input type="text" id="in-station" class="form-control" value="地下鉄東豊線「福住駅」徒歩7分">
+      </div>
+
+      <div class="form-group">
+        <label>所在地</label>
+        <input type="text" id="in-address" class="form-control" value="札幌市豊平区月寒東1条16丁目 47番106">
+      </div>
+
+      <div class="form-section-title" style="margin-top: 1.2rem;">詳細スペック</div>
+
+      <div class="form-group">
+        <label>土地面積</label>
+        <input type="text" id="in-land" class="form-control" value="129.75 ㎡ (39.25 坪)">
+      </div>
+
+      <div class="form-group">
+        <label>建物面積</label>
+        <input type="text" id="in-building" class="form-control" value="1階:56.31㎡ / 2階:37.26㎡（計113.44㎡）">
+      </div>
+
+      <div class="form-group">
+        <label>リフォーム・アピール詳細</label>
+        <textarea id="in-info" class="form-control">・屋根・外壁塗装、システムキッチン新規交換
+・ユニットバス交換、全室クロス張替、フローリング施工</textarea>
+      </div>
+
+      <div class="form-section-title" style="margin-top: 1.2rem;">会社情報</div>
+
+      <div class="form-group">
+        <label>会社名</label>
+        <input type="text" id="in-company" class="form-control" value="日本地建株式会社">
+      </div>
+
+      <div class="form-group">
+        <label>お問合せTEL</label>
+        <input type="text" id="in-tel" class="form-control" value="0120-202-199">
+      </div>
+
+      <button class="btn-print" onclick="window.print()">この内容でA4印刷 / PDF保存</button>
+    </div>
+
+    <!-- 2. 右側：A4プレビュー領域（入力に応じて即座に変化） -->
+    <div class="preview-panel">
+      <div class="a4-sheet">
+
+        <!-- ヘッダー -->
+        <div class="maisoku-header">
+          <div class="maisoku-title" id="out-title">月寒東1条16丁目 戸建</div>
+          <div class="maisoku-subtag" id="out-tag">リフォーム済・即入居可</div>
+        </div>
+
+        <!-- 左カラム：画像・間取り・アピール -->
+        <div class="maisoku-left">
+          <div class="maisoku-img-grid">
+            <div class="maisoku-box">
+              <div class="maisoku-box-title">外観写真</div>
+              <img class="maisoku-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=500&q=80">
+            </div>
+            <div class="maisoku-box">
+              <div class="maisoku-box-title">周辺案内図</div>
+              <img class="maisoku-img" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=500&q=80">
+            </div>
+          </div>
+
+          <div class="maisoku-box">
+            <div class="maisoku-box-title">間取り図（1F / 2F / 地下）</div>
+            <img class="maisoku-madori" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Floor_plan_example.svg/640px-Floor_plan_example.svg.png">
+          </div>
+
+          <div class="maisoku-info-block">
+            <div class="maisoku-info-title">■ リフォーム内容・特記事項</div>
+            <div class="maisoku-info-text" id="out-info">・屋根・外壁塗装、システムキッチン新規交換
+・ユニットバス交換、全室クロス張替、フローリング施工</div>
+          </div>
+        </div>
+
+        <!-- 右カラム：スペック表 -->
+        <table class="maisoku-right-table">
+          <tr><th>物件名</th><td colspan="3" id="out-tbl-title" style="font-weight:700;">月寒東1条16丁目 戸建</td></tr>
+          <tr><th>最寄駅</th><td colspan="3" id="out-station">地下鉄東豊線「福住駅」徒歩7分</td></tr>
+          <tr><th>価格</th><td colspan="3" class="price-cell"><span id="out-price">2,398</span> <span style="font-size:12px; color:#000;">万円</span></td></tr>
+          <tr><th>所在地</th><td colspan="3" id="out-address">札幌市豊平区月寒東1条16丁目 47番106</td></tr>
+          <tr><th>土地面積</th><td id="out-land">129.75 ㎡ (39.25 坪)</td><th>私道</th><td>なし</td></tr>
+          <tr><th>建物面積</th><td colspan="3" id="out-building">1階:56.31㎡ / 2階:37.26㎡（計113.44㎡）</td></tr>
+          <tr><th>構造・規模</th><td colspan="3">木・鉄筋コンクリート造 2階建</td></tr>
+          <tr><th>土地権利</th><td>所有権</td><th>地目</th><td>宅地</td></tr>
+          <tr><th>建ぺい率</th><td>60 %</td><th>容積率</th><td>200 %</td></tr>
+          <tr><th>現況</th><td>空室</td><th>引渡</th><td>即時 / 相談</td></tr>
+          <tr><th>設備</th><td colspan="3">電気、上下水道、都市ガス、追焚機能付きバス、駐車場2台可</td></tr>
+        </table>
+
+        <!-- フッター -->
+        <div class="maisoku-footer">
+          <div>
+            <div class="company-name" id="out-company">日本地建株式会社</div>
+            <div class="company-sub">国土交通大臣（2）第7946号 / 営業時間 9:30〜18:30（日・祝定休）</div>
+          </div>
+          <div style="font-size: 8.5px;">
+            <div>〒064-0825 札幌市中央区北5条</div>
+            <div>取引態様：<b>媒介</b> / 手数料：3%+6万</div>
+          </div>
+          <div class="contact-box">
+            <div style="font-size:8px;">お問合せフリーダイヤル</div>
+            <div class="contact-tel" id="out-tel">0120-202-199</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 入力要素と出力描画エリアをリアルタイムで同期させる仕組み（イベントリスナー）
+    function bindInput(inputId, outputId, isTableTitle = false) {
+      const inputEl = document.getElementById(inputId);
+      const outputEl = document.getElementById(outputId);
+
+      inputEl.addEventListener('input', () => {
+        outputEl.textContent = inputEl.value;
+        if(isTableTitle) {
+          document.getElementById('out-tbl-title').textContent = inputEl.value;
+        }
+      });
+    }
+
+    // リアルタイム連動のバインド設定
+    bindInput('in-title', 'out-title', true);
+    bindInput('in-tag', 'out-tag');
+    bindInput('in-price', 'out-price');
+    bindInput('in-station', 'out-station');
+    bindInput('in-address', 'out-address');
+    bindInput('in-land', 'out-land');
+    bindInput('in-building', 'out-building');
+    bindInput('in-info', 'out-info');
+    bindInput('in-company', 'out-company');
+    bindInput('in-tel', 'out-tel');
+  </script>
+</body>
+</html>

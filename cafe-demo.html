@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOCTURNE CAFE & BAR | シックで落ち着いた大人のサードプレイス</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Serif+JP:wght@300;500;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --bg-card: #1e1e1e;
+      --accent-gold: #c5a059;
+      --text-main: #f0f0f0;
+      --text-sub: #a0a0a0;
+      --border-color: #2a2a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(18, 18, 18, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .back-link {
+      color: var(--text-sub);
+      text-decoration: none;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+
+    .back-link:hover {
+      color: var(--accent-gold);
+    }
+
+    .logo {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.25em;
+      color: var(--accent-gold);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-menu a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      transition: color 0.3s;
+    }
+
+    .nav-menu a:hover {
+      color: var(--accent-gold);
+    }
+
+    /* Hero Swiper */
+    .hero-swiper {
+      width: 100%;
+      height: 85vh;
+      min-height: 550px;
+      margin-top: 60px;
+    }
+
+    .swiper-slide {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      transition: transform 6s ease-out;
+      transform: scale(1);
+    }
+
+    .swiper-slide-active .slide-bg {
+      transform: scale(1.08);
+    }
+
+    .swiper-slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(18,18,18,0.3) 0%, rgba(18,18,18,0.7) 100%);
+      z-index: 1;
+    }
+
+    .slide-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 800px;
+      padding: 0 1.5rem;
+    }
+
+    .slide-subtitle {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      letter-spacing: 0.35em;
+      font-size: 0.95rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .slide-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2.8rem;
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    .btn-gold {
+      display: inline-block;
+      border: 1px solid var(--accent-gold);
+      color: var(--accent-gold);
+      padding: 0.8rem 2.2rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-decoration: none;
+      transition: all 0.3s;
+      background: rgba(18, 18, 18, 0.4);
+    }
+
+    .btn-gold:hover {
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+    }
+
+    .swiper-pagination-bullet {
+      background: #fff;
+      opacity: 0.4;
+    }
+    .swiper-pagination-bullet-active {
+      background: var(--accent-gold) !important;
+      opacity: 1;
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    /* Container & Common Section */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 6rem 1.5rem;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-subtitle {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 2rem;
+      font-weight: 400;
+    }
+
+    .concept-text {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.05rem;
+      color: var(--text-sub);
+      line-height: 2.3;
+    }
+
+    /* Menu Section Styles */
+    .menu-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      padding: 0.7rem 2rem;
+      font-size: 0.85rem;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: rgba(197, 160, 89, 0.08);
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .menu-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+      opacity: 1;
+    }
+
+    .menu-item.hide {
+      display: none;
+      opacity: 0;
+    }
+
+    .menu-item:hover {
+      transform: translateY(-6px);
+      border-color: rgba(197, 160, 89, 0.4);
+    }
+
+    .menu-img-wrap {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .menu-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .menu-item:hover .menu-img-wrap img {
+      transform: scale(1.06);
+    }
+
+    .menu-body {
+      padding: 1.5rem;
+    }
+
+    .menu-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.6rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 0.6rem;
+    }
+
+    .menu-name {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-main);
+    }
+
+    .menu-price {
+      color: var(--accent-gold);
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .menu-desc {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+
+    /* Instagram Gallery Section */
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .insta-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+
+    .insta-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .insta-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 18, 18, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      color: var(--accent-gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+    }
+
+    .insta-item:hover img {
+      transform: scale(1.1);
+    }
+
+    .insta-item:hover .insta-overlay {
+      opacity: 1;
+    }
+
+    /* Access & Map Section */
+    .access-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 3rem;
+      border-radius: 4px;
+    }
+
+    @media (max-width: 768px) {
+      .access-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .access-info h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+
+    .access-dl {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 1.2rem;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+
+    .access-dl dt {
+      color: var(--accent-gold);
+      font-weight: 500;
+    }
+
+    .access-dl dd {
+      color: var(--text-sub);
+    }
+
+    .map-container {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      filter: grayscale(80%) invert(90%) hue-rotate(180deg);
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 3rem 1.5rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-left">
+      <a href="index.html" class="back-link">&larr; PORTFOLIO</a>
+      <a href="#" class="logo">NOCTURNE</a>
+    </div>
+    <ul class="nav-menu">
+      <li><a href="#concept">CONCEPT</a></li>
+      <li><a href="#menu">MENU</a></li>
+      <li><a href="#gallery">GALLERY</a></li>
+      <li><a href="#access">ACCESS</a></li>
+    </ul>
+  </header>
+
+  <!-- Hero Swiper (カルーセル) -->
+  <div class="swiper hero-swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="slide-content">
+          <div class="slide-subtitle">SPECIALTY COFFEE & DESSERT</div>
+          <h2 class="slide-title">静寂と寛ぎが交差する、<br>特別な一杯を。</h2>
+          <a href="#concept" class="btn-gold">DISCOVER MORE</a>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="slide-content">
+          <div class="slide-subtitle">SEASONAL SWEETS</div>
+          <h2 class="slide-title">素材の美しさを引き出した<br>自家製デザート</h2>
+          <a href="#menu" class="btn-gold">VIEW MENU</a>
+        </div>
+      </div>
+      <div class="swiper-slide">
+        <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80');"></div>
+        <div class="slide-content">
+          <div class="slide-subtitle">NIGHT TIME</div>
+          <h2 class="slide-title">夜の訪れとともに味わう、<br>心地よい空間</h2>
+          <a href="#access" class="btn-gold">ACCESS & MAP</a>
+        </div>
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+
+  <!-- Main Content Container -->
+  <div class="container">
+
+    <!-- 1. Concept Section -->
+    <section id="concept">
+      <div class="section-header">
+        <div class="section-subtitle">CONCEPT</div>
+        <h2 class="section-title">洗練された空間と、至福のひととき</h2>
+      </div>
+      <p class="concept-text">
+        都市の喧騒から少し離れた場所に位置するNOCTURNE。<br>
+        厳選された豆を使用したハンドドリップコーヒーと、パティシエ特製の季節のデザート。<br>
+        日常を少しだけ贅沢に彩る、大人のためのサードプレイスです。
+      </p>
+    </section>
+
+    <!-- 2. Menu Section -->
+    <section id="menu" style="margin-top: 6rem;">
+      <div class="section-header">
+        <div class="section-subtitle">OUR MENU</div>
+        <h2 class="section-title">メニュー</h2>
+      </div>
+
+      <div class="menu-tabs">
+        <button class="tab-btn active" onclick="filterMenu('all', this)">ALL</button>
+        <button class="tab-btn" onclick="filterMenu('drink', this)">DRINK</button>
+        <button class="tab-btn" onclick="filterMenu('sweets', this)">SWEETS</button>
+        <button class="tab-btn" onclick="filterMenu('food', this)">FOOD</button>
+      </div>
+
+      <div class="menu-grid">
+        <div class="menu-item" data-category="drink">
+          <div class="menu-img-wrap">
+            <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80" alt="ハンドドリップコーヒー">
+          </div>
+          <div class="menu-body">
+            <div class="menu-title-row">
+              <span class="menu-name">シングルオリジン・ドリップ</span>
+              <span class="menu-price">¥750</span>
+            </div>
+            <p class="menu-desc">月替わりの厳選した浅煎り〜中深煎り豆を、オーダーを受けてから丁寧にハンドドリップ。</p>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="sweets">
+          <div class="menu-img-wrap">
+            <img src="https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80" alt="バスクチーズケーキ">
+          </div>
+          <div class="menu-body">
+            <div class="menu-title-row">
+              <span class="menu-name">濃厚バスクチーズケーキ</span>
+              <span class="menu-price">¥850</span>
+            </div>
+            <p class="menu-desc">高温で一気に焼き上げ、表面の香ばしさと中心のクリーミーな食感の対比を追求した看板スイーツ。</p>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="food">
+          <div class="menu-img-wrap">
+            <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80" alt="アボカドタルティーヌ">
+          </div>
+          <div class="menu-body">
+            <div class="menu-title-row">
+              <span class="menu-name">アボカドと卵のタルティーヌ</span>
+              <span class="menu-price">¥1,200</span>
+            </div>
+            <p class="menu-desc">自家製カンパーニュの上にフレッシュアボカドと半熟ポーチドエッグを贅沢に乗せた一品。</p>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="drink">
+          <div class="menu-img-wrap">
+            <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=600&q=80" alt="エスプレッソラテ">
+          </div>
+          <div class="menu-body">
+            <div class="menu-title-row">
+              <span class="menu-name">カフェ・ラテ（Hot/Iced）</span>
+              <span class="menu-price">¥800</span>
+            </div>
+            <p class="menu-desc">濃厚なエスプレッソショットと、低温殺菌ミルクのきめ細やかなフォームが生む極上の味わい。</p>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="sweets">
+          <div class="menu-img-wrap">
+            <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" alt="クラシックプリン">
+          </div>
+          <div class="menu-body">
+            <div class="menu-title-row">
+              <span class="menu-name">自家製クラシックプリン</span>
+              <span class="menu-price">¥700</span>
+            </div>
+            <p class="menu-desc">ほろ苦い自家製カラメルと、少し固めに仕上げた昔ながらの濃厚カスタードプリン。</p>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="food">
+          <div class="menu-img-wrap">
+            <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=600&q=80" alt="ローストビーフサンド">
+          </div>
+          <div class="menu-body">
+            <div class="menu-title-row">
+              <span class="menu-name">自家製ローストビーフサンド</span>
+              <span class="menu-price">¥1,450</span>
+            </div>
+            <p class="menu-desc">じっくり低温調理した自家製ローストビーフとクレソン、ハニーマスタードの贅沢な組み合わせ。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Instagram Gallery Section -->
+    <section id="gallery" style="margin-top: 6rem;">
+      <div class="section-header">
+        <div class="section-subtitle">INSTAGRAM</div>
+        <h2 class="section-title">ギャラリー</h2>
+      </div>
+
+      <div class="insta-grid">
+        <div class="insta-item">
+          <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=500&q=80" alt="Coffee beans">
+          <div class="insta-overlay">@NOCTURNE_CAFE</div>
+        </div>
+        <div class="insta-item">
+          <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=500&q=80" alt="Espresso machine">
+          <div class="insta-overlay">@NOCTURNE_CAFE</div>
+        </div>
+        <div class="insta-item">
+          <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=500&q=80" alt="Pour over coffee">
+          <div class="insta-overlay">@NOCTURNE_CAFE</div>
+        </div>
+        <div class="insta-item">
+          <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=500&q=80" alt="Interior atmosphere">
+          <div class="insta-overlay">@NOCTURNE_CAFE</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Access Section -->
+    <section id="access" style="margin-top: 6rem;">
+      <div class="section-header">
+        <div class="section-subtitle">LOCATION & HOURS</div>
+        <h2 class="section-title">店舗情報・アクセス</h2>
+      </div>
+
+      <div class="access-wrapper">
+        <div class="access-info">
+          <h3>NOCTURNE CAFE & BAR</h3>
+          <dl class="access-dl">
+            <dt>ADDRESS</dt>
+            <dd>〒150-0001<br>東京都渋谷区神宮前 4-12-10 1F</dd>
+
+            <dt>OPEN</dt>
+            <dd>11:00 - 23:00 (L.O. 22:30)<br><span style="font-size: 0.8rem; color: #777;">※カフェ 11:00-18:00 / バー 18:00-23:00</span></dd>
+
+            <dt>CLOSE</dt>
+            <dd>毎週水曜日 / 第2火曜日</dd>
+
+            <dt>TEL</dt>
+            <dd>03-1234-5678</dd>
+
+            <dt>SEAT</dt>
+            <dd>24席（カウンター 8席 / テーブル 16席）</dd>
+          </dl>
+        </div>
+
+        <div class="map-container">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7479754723145!2d139.70724831525826!3d35.66723298019777!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188ca298f2334f%3A0xb308259020f92b76!2z44CSMTUwLTAwMDEgVG9reW8sIFNoaWJ1eWEgQ2l0eSwgSmluZ3VtYWUsIDQtY2hvbWXiiJIxMi0xMA!5e0!3m2!1sen!2sjp!4v1620000000000!5m2!1sen!2sjp" 
+            allowfullscreen="" 
+            loading="lazy">
+          </iframe>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /.container -->
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2026 NOCTURNE CAFE & BAR. All Rights Reserved.
+  </footer>
+
+  <!-- Swiper JS & Custom Script -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script>
+    // Swiper カルーセル初期化
+    const swiper = new Swiper('.hero-swiper', {
+      loop: true,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      autoplay: { delay: 5000, disableOnInteraction: false },
+      speed: 1500,
+      pagination: { el: '.swiper-pagination', clickable: true },
+    });
+
+    // メニューフィルタリング機能
+    function filterMenu(category, btnElement) {
+      document.querySelectorAll('.menu-tabs .tab-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      const items = document.querySelectorAll('.menu-item');
+      items.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-category') === category) {
+          item.classList.remove('hide');
+        } else {
+          item.classList.add('hide');
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

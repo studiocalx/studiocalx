@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A4 店舗チラシ・販売図面出力システム | レスポンシブDTP</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+JP:wght@500;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #121212;
+      --bg-card: #1e1e1e;
+      --accent-gold: #c5a059;
+      --text-main: #f0f0f0;
+      --text-sub: #a0a0a0;
+      --border-color: #2a2a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Noto Sans JP', sans-serif;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1050px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    .hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+      font-family: 'Noto Serif JP', serif;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-sub);
+      font-size: 0.9rem;
+    }
+
+    /* Industry Selector Buttons */
+    .industry-selector {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .ind-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .ind-btn:hover {
+      border-color: var(--accent-gold);
+      color: var(--text-main);
+    }
+
+    .ind-btn.active {
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      font-weight: 700;
+      border-color: var(--accent-gold);
+    }
+
+    /* POP Preview Stage */
+    .pop-preview-wrapper {
+      background: #000;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+      overflow-x: auto;
+    }
+
+    /* --- A4 共通ベース --- */
+    .a4-sheet {
+      background: #ffffff;
+      color: #000000;
+      width: 800px;
+      margin: 0 auto;
+      padding: 12px;
+      font-family: 'Noto Sans JP', sans-serif;
+      box-shadow: 0 0 20px rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+    }
+
+    /* --- 1. カフェ/POPスタイル --- */
+    .style-pop {
+      max-width: 480px;
+      border: 3px double var(--accent-gold);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .style-pop .pop-img-box { width: 100%; height: 200px; object-fit: cover; margin-bottom: 1rem; }
+    .style-pop .pop-tag { background: #000; color: var(--accent-gold); font-family: 'Cinzel', serif; font-size: 0.75rem; padding: 0.3rem 1rem; display: inline-block; margin-bottom: 0.8rem; }
+    .style-pop .pop-main-title { font-family: 'Noto Serif JP', serif; font-size: 1.6rem; font-weight: 700; margin-bottom: 0.8rem; line-height: 1.3; }
+    .style-pop .pop-desc { font-size: 0.85rem; color: #444; margin-bottom: 1.2rem; }
+    .style-pop .pop-price { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 700; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 0.3rem 0; margin-bottom: 1rem; }
+    .style-pop .pop-footer { font-size: 0.75rem; color: #777; }
+
+    /* --- 2. 不動産マイソクスタイル --- */
+    .style-maisoku {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      gap: 8px;
+      border: 2px solid #003366;
+      padding: 8px;
+      font-size: 11px;
+    }
+    .maisoku-header { grid-column: 1 / -1; background: #003366; color: #fff; padding: 6px 12px; display: flex; justify-content: space-between; align-items: center; }
+    .maisoku-title { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
+    .maisoku-subtag { background: #fff; color: #003366; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 2px; }
+    .maisoku-left { display: flex; flex-direction: column; gap: 6px; }
+    .maisoku-img-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .maisoku-box { border: 1px solid #003366; position: relative; background: #f9f9f9; }
+    .maisoku-box-title { background: #003366; color: #fff; font-size: 10px; font-weight: 700; padding: 2px 6px; text-align: center; }
+    .maisoku-img { width: 100%; height: 115px; object-fit: cover; display: block; }
+    .maisoku-madori { width: 100%; height: 135px; object-fit: contain; background: #fff; padding: 4px; }
+    .maisoku-info-block { border: 1px solid #003366; padding: 6px; background: #f0f4f8; }
+    .maisoku-info-title { font-weight: 700; color: #003366; border-bottom: 1px solid #003366; margin-bottom: 4px; padding-bottom: 2px; font-size: 11px; }
+    .maisoku-info-list { list-style: none; line-height: 1.5; font-size: 10.5px; }
+    .maisoku-right-table { width: 100%; border-collapse: collapse; border: 1px solid #003366; font-size: 10.5px; }
+    .maisoku-right-table th { background: #003366; color: #ffffff; padding: 4px 6px; font-weight: 500; text-align: center; width: 22%; border: 1px solid #003366; white-space: nowrap; }
+    .maisoku-right-table td { padding: 4px 6px; border: 1px solid #003366; background: #fff; color: #000; }
+    .price-cell { font-size: 22px; font-weight: 900; color: #d32f2f; text-align: right; padding-right: 12px !important; }
+    .maisoku-footer { grid-column: 1 / -1; border: 2px solid #003366; background: #fff; padding: 6px 10px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; align-items: center; }
+    .company-name { font-size: 18px; font-weight: 900; color: #003366; margin-bottom: 2px; }
+    .company-sub { font-size: 9.5px; color: #333; }
+    .contact-box { background: #003366; color: #fff; text-align: center; padding: 4px; border-radius: 2px; }
+    .contact-tel { font-size: 15px; font-weight: 900; }
+
+    /* --- 3. イベント・セミナーチラシスタイル --- */
+    .style-event {
+      border: 3px solid #1a365d;
+      padding: 0;
+      background: #fafafa;
+    }
+    .event-header-banner { background: #1a365d; color: #fff; padding: 20px; text-align: center; }
+    .event-catch { background: #e2e8f0; color: #1a365d; display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 12px; border-radius: 12px; margin-bottom: 8px; }
+    .event-title { font-size: 22px; font-weight: 900; line-height: 1.3; font-family: 'Noto Serif JP', serif; }
+    .event-body { padding: 15px 20px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 15px; }
+    .event-main-img { width: 100%; height: 160px; object-fit: cover; border-radius: 4px; margin-bottom: 10px; }
+    .event-section-title { font-size: 13px; font-weight: 700; color: #1a365d; border-bottom: 2px solid #1a365d; padding-bottom: 3px; margin-bottom: 8px; }
+    .event-program-list { font-size: 11px; line-height: 1.8; margin-bottom: 12px; }
+    .event-speaker-box { background: #edf2f7; border: 1px solid #cbd5e0; padding: 10px; border-radius: 4px; display: flex; gap: 10px; align-items: center; }
+    .speaker-avatar { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
+    .speaker-info { font-size: 10px; line-height: 1.4; }
+    .event-info-card { background: #fff; border: 2px solid #e2e8f0; padding: 12px; border-radius: 4px; }
+    .event-info-item { margin-bottom: 8px; font-size: 11px; }
+    .event-info-label { font-weight: 700; color: #2b6cb0; font-size: 10px; }
+    .event-qr-box { text-align: center; background: #fffaf0; border: 1px dashed #dd6b20; padding: 10px; margin-top: 10px; border-radius: 4px; }
+    .event-price-tag { font-size: 18px; font-weight: 900; color: #dd6b20; }
+
+    /* Button Gold */
+    .btn-gold {
+      display: inline-block;
+      border: 1px solid var(--accent-gold);
+      background: var(--accent-gold);
+      color: var(--bg-dark);
+      padding: 0.8rem 2.2rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .btn-gold:hover { background: #d4af66; }
+
+    /* Benefits & Before/After Sections */
+    .section-benefits { margin-top: 5rem; }
+    .section-header { text-align: center; margin-bottom: 3rem; }
+    .section-subtitle { font-family: 'Cinzel', serif; color: var(--accent-gold); font-size: 0.85rem; letter-spacing: 0.3em; margin-bottom: 0.5rem; }
+    .section-title { font-family: 'Noto Serif JP', serif; font-size: 1.8rem; font-weight: 500; }
+    .ba-container { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem; }
+    @media (max-width: 768px) { .ba-container { grid-template-columns: 1fr; } }
+    .ba-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 2.5rem; border-radius: 4px; }
+    .ba-card.before { border-left: 4px solid #e53e3e; }
+    .ba-card.after { border-left: 4px solid var(--accent-gold); }
+    .ba-badge { font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 0.2em; padding: 0.3rem 0.8rem; border-radius: 2px; display: inline-block; margin-bottom: 1rem; }
+    .before .ba-badge { background: rgba(229, 62, 62, 0.15); color: #fc8181; }
+    .after .ba-badge { background: rgba(197, 160, 89, 0.15); color: var(--accent-gold); }
+    .ba-title { font-size: 1.2rem; margin-bottom: 1rem; font-family: 'Noto Serif JP', serif; }
+    .ba-list { list-style: none; font-size: 0.9rem; color: var(--text-sub); line-height: 2; }
+    .ba-list li { position: relative; padding-left: 1.5rem; }
+    .before .ba-list li::before { content: "✕"; position: absolute; left: 0; color: #fc8181; }
+    .after .ba-list li::before { content: "✓"; position: absolute; left: 0; color: var(--accent-gold); }
+
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .benefit-card { background: var(--bg-card); border: 1px solid var(--border-color); padding: 2rem; border-radius: 4px; }
+    .benefit-num { font-family: 'Cinzel', serif; color: var(--accent-gold); font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .benefit-card h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--text-main); font-family: 'Noto Serif JP', serif; }
+    .benefit-card p { font-size: 0.85rem; color: var(--text-sub); line-height: 1.8; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- 1. トップ・プレビューエリア -->
+    <header class="hero-header">
+      <h1 class="hero-title">A4 自動組版・図面出力システム</h1>
+      <p class="hero-subtitle">構造化データを流し込み、現場で即座に高密度な紙面・PDFを自動生成</p>
+      <a href="dtp-editor.html" class="demo-link-btn">👉 【体験版】リアルタイム入力エディタへ</a>
+    </header>
+
+    <!-- 業態切り替えボタン -->
+    <div class="industry-selector">
+      <button class="ind-btn active" onclick="renderView('realestate', this)">🏢 不動産（販売図面・マイソク）</button>
+      <button class="ind-btn" onclick="renderView('event', this)">🎤 セミナー・イベント告知チラシ</button>
+      <button class="ind-btn" onclick="renderView('cafe', this)">☕ 飲食店（卓上POP・メニュー）</button>
+    </div>
+
+    <!-- リアルタイム印刷プレビュー枠 -->
+    <div class="pop-preview-wrapper">
+      <div id="render-target" class="a4-sheet style-maisoku">
+        <!-- 初期表示：不動産マイソク -->
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-bottom: 4rem;">
+      <button class="btn-gold" onclick="alert('選択中のレイアウトで高精度A4 PDFを出力します')">このデザインで高解像度A4 PDFを出力</button>
+    </div>
+
+    <!-- 2. 導入メリット・Before/After セクション -->
+    <section class="section-benefits">
+      <div class="section-header">
+        <div class="section-subtitle">WHY RESPONSIVE DTP?</div>
+        <h2 class="section-title">現場の印刷物作成を、劇的にシンプルに</h2>
+      </div>
+
+      <!-- Before / After 比較 -->
+      <div class="ba-container">
+        <div class="ba-card before">
+          <span class="ba-badge">BEFORE</span>
+          <h3 class="ba-title">従来の制作フロー</h3>
+          <ul class="ba-list">
+            <li>外注デザイナーへの依頼で毎回制作費が発生</li>
+            <li>文字や価格のちょっとした修正に数日のタイムラグ</li>
+            <li>WordやExcelで自作するとレイアウトが崩れて不格好に</li>
+            <li>Webデータと店頭掲示物で表記内容のズレ・ミスが発生</li>
+          </ul>
+        </div>
+
+        <div class="ba-card after">
+          <span class="ba-badge">AFTER</span>
+          <h3 class="ba-title">本システム導入後</h3>
+          <ul class="ba-list">
+            <li>外注費ゼロ。現場で入力して即座にプロ品質PDFを発行</li>
+            <li>データ修正から印刷完了まで「わずか1分」で完結</li>
+            <li>CSS絶対寸法制御により、誰が作っても100%崩れない</li>
+            <li>Web用データベースと直接連携し、一括データ管理を実現</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 3つの core メリット -->
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-num">01</div>
+          <h3>コスト＆時間の最小化</h3>
+          <p>デザインソフトのライセンス費用や外注費をカット。日替わりメニューや緊急のお知らせも、思い立ったその場ですぐに印刷できます。</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-num">02</div>
+          <h3>専門スキル・知識不要</h3>
+          <p>Illustratorなどのデザイン知識は一切不要。Web上のフォームにテキストを打ち込むだけで、ミリ単位で整ったA4フォーマットが自動生成されます。</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-num">03</div>
+          <h3>高精度なミリ単位出力</h3>
+          <p>ブラウザの印刷エンジン（CSS Paged Media）を厳密に制御。画面上のプレビューそのままの美しさで、A4用紙（210×297mm）に収まります。</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const target = document.getElementById('render-target');
+
+    // 1. 不動産マイソク用HTML
+    const maisokuHTML = `
+      <div class="maisoku-header">
+        <div class="maisoku-title">月寒東1条16丁目 戸建</div>
+        <div class="maisoku-subtag">リフォーム済・即入居可</div>
+      </div>
+
+      <div class="maisoku-left">
+        <div class="maisoku-img-grid">
+          <div class="maisoku-box">
+            <div class="maisoku-box-title">外観写真</div>
+            <img class="maisoku-img" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=500&q=80">
+          </div>
+          <div class="maisoku-box">
+            <div class="maisoku-box-title">周辺案内図</div>
+            <img class="maisoku-img" src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=500&q=80">
+          </div>
+        </div>
+
+        <div class="maisoku-box">
+          <div class="maisoku-box-title">間取り図（1F / 2F / 地下）</div>
+          <img class="maisoku-madori" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Floor_plan_example.svg/640px-Floor_plan_example.svg.png">
+        </div>
+
+        <div class="maisoku-info-block">
+          <div class="maisoku-info-title">■ リフォーム内容（2026年完了）</div>
+          <ul class="maisoku-info-list">
+            <li>・屋根・外壁塗装、システムキッチン新規交換</li>
+            <li>・ユニットバス交換、全室クロス張替、フローリング施工</li>
+          </ul>
+        </div>
+      </div>
+
+      <table class="maisoku-right-table">
+        <tr><th>物件名</th><td colspan="3" style="font-weight:700;">月寒東１条１６丁目 戸建</td></tr>
+        <tr><th>最寄駅</th><td colspan="3">地下鉄東豊線<b>「福住駅」徒歩7分</b></td></tr>
+        <tr><th>価格</th><td colspan="3" class="price-cell">2,398 <span style="font-size:14px; color:#000;">万円</span></td></tr>
+        <tr><th>所在地</th><td colspan="3">札幌市豊平区月寒東1条16丁目 47番106</td></tr>
+        <tr><th>土地面積</th><td>129.75 ㎡ (39.25 坪)</td><th>私道</th><td>なし</td></tr>
+        <tr><th>建物面積</th><td colspan="3">1階:56.31㎡ / 2階:37.26㎡ （合計: 113.44 ㎡）</td></tr>
+        <tr><th>構造・規模</th><td colspan="3">木・鉄筋コンクリート造 2階建</td></tr>
+        <tr><th>土地権利</th><td>所有権</td><th>地目</th><td>宅地</td></tr>
+        <tr><th>建ぺい率</th><td>60 %</td><th>容積率</th><td>200 %</td></tr>
+        <tr><th>現況</th><td>空室</td><th>引渡</th><td>即時 / 相談</td></tr>
+        <tr><th>設備</th><td colspan="3">電気、上下水道、都市ガス、追焚機能付きバス、駐車場2台可</td></tr>
+      </table>
+
+      <div class="maisoku-footer">
+        <div>
+          <div class="company-name">日本地建株式会社</div>
+          <div class="company-sub">国土交通大臣（2）第7946号 / 営業時間 9:30〜18:30（日・祝定休）</div>
+        </div>
+        <div>
+          <div>〒064-0825 札幌市中央区北5条</div>
+          <div>取引態様：<b>媒介</b> / 手数料：3%+6万</div>
+        </div>
+        <div class="contact-box">
+          <div style="font-size:9px;">お問合せフリーダイヤル</div>
+          <div class="contact-tel">0120-202-199</div>
+        </div>
+      </div>
+    `;
+
+    // 2. セミナーチラシ用HTML（アイキャッチ・講師・要項・QR付き）
+    const eventHTML = `
+      <div class="event-header-banner">
+        <span class="event-catch">店舗オーナー・経営者向け特別セミナー</span>
+        <h1 class="event-title">AI×自動組版が拓く<br>店舗DX・集客自動化戦略</h1>
+      </div>
+
+      <div class="event-body">
+        <div>
+          <img class="event-main-img" src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80">
+          <div class="event-section-title">■ 本セミナーで学べるポイント</div>
+          <ul class="event-program-list">
+            <li>・外注費をゼロにする「自動DTPシステム」の導入アプローチ</li>
+            <li>・Webデータと紙POPの一元管理でミス・工数を9割削減</li>
+            <li>・実例解説：売上を2.4倍に伸ばした店舗掲示物のレイアウト法則</li>
+          </ul>
+
+          <div class="event-section-title">■ 登壇者プロフィール</div>
+          <div class="event-speaker-box">
+            <img class="speaker-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80">
+            <div class="speaker-info">
+              <b>佐藤 健太郎 氏</b><br>
+              株式会社DXソリューションズ 代表取締役<br>
+              大手外食チェーンや不動産店舗のプロモーションDXを多数手掛ける。
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="event-info-card">
+            <div class="event-section-title">■ 開催概要</div>
+            
+            <div class="event-info-item">
+              <div class="event-info-label">【日時】</div>
+              <b>2026年10月15日（木）</b><br>14:00〜16:00（開場13:30）
+            </div>
+
+            <div class="event-info-item">
+              <div class="event-info-label">【会場】</div>
+              <b>東京国際フォーラム ホールB</b><br>（有楽町駅 徒歩1分）<br>※オンライン同時配信あり
+            </div>
+
+            <div class="event-info-item">
+              <div class="event-info-label">【参加費】</div>
+              <div class="event-price-tag">完全無料（要予約）</div>
+            </div>
+
+            <div class="event-qr-box">
+              <div style="font-size:10px; font-weight:700; color:#c05621; margin-bottom:4px;">スマホから1分で申込完了</div>
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=90x90&data=https://example.com" style="width:70px; height:70px;">
+              <div style="font-size:9px; color:#718096; margin-top:2px;">定員50名（先着順）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // 3. カフェPOP用HTML
+    const cafeHTML = `
+      <img class="pop-img-box" src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80">
+      <div class="pop-tag">RECOMMENDED MENU</div>
+      <h2 class="pop-main-title">本日限定<br>特選クラフトブレンド</h2>
+      <p class="pop-desc">希少なシングルオリジン豆を低温焙煎。芳醇なアロマと果実のような甘みをお楽しみください。</p>
+      <div class="pop-price">¥850</div>
+      <div class="pop-footer">CAFE XAVIER - SPECIALTY COFFEE ROASTERS</div>
+    `;
+
+    function renderView(type, btn) {
+      document.querySelectorAll('.ind-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      if (type === 'realestate') {
+        target.className = 'a4-sheet style-maisoku';
+        target.innerHTML = maisokuHTML;
+      } else if (type === 'event') {
+        target.className = 'a4-sheet style-event';
+        target.innerHTML = eventHTML;
+      } else if (type === 'cafe') {
+        target.className = 'a4-sheet style-pop';
+        target.innerHTML = cafeHTML;
+      }
+    }
+
+    // 初期表示：不動産マイソク
+    renderView('realestate', document.querySelector('.ind-btn.active'));
+  </script>
+</body>
+</html>

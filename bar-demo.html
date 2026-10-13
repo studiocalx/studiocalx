@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAR L'ÉTOILE | Authentic Bar & Lounge</title>
+  <meta name="description" content="BAR L'ÉTOILE - 静寂と光が交差する、大人のためのオーセンティック・バー。">
+
+  <!-- Google Fonts: Playfair Display & Noto Serif JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #100a0c;        /* 深いボルドーブラック */
+      --bg-card: rgba(26, 15, 19, 0.7);
+      --accent-rose: #e0a96d;    /* ローズアンバー */
+      --accent-gold: #f3d19c;    /* シャンパンゴールド */
+      --text-main: #f5f0eb;
+      --text-sub: #b3a2a6;
+      --border-line: rgba(224, 169, 109, 0.25);
+      --font-en: 'Playfair Display', serif;
+      --font-ja: 'Noto Serif JP', serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-ja);
+      line-height: 1.8;
+      letter-spacing: 0.05em;
+      overflow-x: hidden;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 1.5rem;
+      background: radial-gradient(circle at center, rgba(35, 12, 18, 0.5) 0%, rgba(16, 10, 12, 0.95) 100%),
+                  url('https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    }
+
+    .hero-inner {
+      max-width: 850px;
+      z-index: 2;
+    }
+
+    .hero-sub {
+      font-family: var(--font-en);
+      font-size: 1.1rem;
+      letter-spacing: 0.35em;
+      color: var(--accent-rose);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-en);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 20%, var(--accent-gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--text-sub);
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .btn-main {
+      display: inline-block;
+      padding: 1rem 2.8rem;
+      font-family: var(--font-en);
+      font-size: 1.1rem;
+      letter-spacing: 0.2em;
+      color: #100a0c;
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-rose) 100%);
+      text-decoration: none;
+      border-radius: 2px;
+      transition: all 0.4s ease;
+      box-shadow: 0 4px 20px rgba(224, 169, 109, 0.3);
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(243, 209, 156, 0.5);
+    }
+
+    /* SECTION GENERAL */
+    .section {
+      padding: 6rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      font-family: var(--font-en);
+      font-size: 0.85rem;
+      color: var(--accent-rose);
+      letter-spacing: 0.3em;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-en);
+      font-size: 2.4rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+    }
+
+    /* JS CAROUSEL (SHOWCASE) */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      border: 1px solid var(--border-line);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+      position: relative;
+      height: 480px;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.75) contrast(1.1);
+    }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 2.5rem 2rem 2rem;
+      background: linear-gradient(transparent, rgba(16, 10, 12, 0.95));
+    }
+
+    .slide-cat {
+      font-family: var(--font-en);
+      font-size: 0.8rem;
+      color: var(--accent-rose);
+      letter-spacing: 0.2em;
+    }
+
+    .slide-name {
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin: 0.3rem 0;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 1rem;
+      pointer-events: none;
+    }
+
+    .carousel-btn {
+      pointer-events: auto;
+      background: rgba(16, 10, 12, 0.6);
+      border: 1px solid var(--border-line);
+      color: var(--text-main);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s;
+    }
+
+    .carousel-btn:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border-line);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .dot.active {
+      background: var(--accent-gold);
+      transform: scale(1.4);
+    }
+
+    /* INSTAGRAM GRID */
+    .insta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .insta-item {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 2px;
+      border: 1px solid var(--border-line);
+    }
+
+    .insta-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .insta-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(18, 9, 12, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+    }
+
+    .insta-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .insta-item:hover .insta-overlay {
+      opacity: 1;
+    }
+
+    /* ACCESS & MAP */
+    .access-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 3rem;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      padding: 2.5rem;
+      border-radius: 4px;
+      backdrop-filter: blur(10px);
+    }
+
+    .access-info h3 {
+      font-family: var(--font-en);
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+      margin-bottom: 1.5rem;
+    }
+
+    .info-list {
+      list-style: none;
+      font-size: 0.95rem;
+    }
+
+    .info-list li {
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed rgba(224, 169, 109, 0.15);
+      padding-bottom: 0.5rem;
+    }
+
+    .info-list span {
+      color: var(--text-sub);
+    }
+
+    .map-frame {
+      width: 100%;
+      height: 320px;
+      border: 1px solid var(--border-line);
+      border-radius: 2px;
+      filter: grayscale(0.8) invert(0.92) contrast(1.2);
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border-line);
+      padding: 4rem 1.5rem 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+
+    .footer-logo {
+      font-family: var(--font-en);
+      font-size: 1.8rem;
+      color: var(--accent-gold);
+      letter-spacing: 0.25em;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-sub">Authentic Bar & Lounge</p>
+      <h1 class="hero-title">BAR L'ÉTOILE</h1>
+      <p class="hero-desc">静寂と光が交差する刻。厳選されたヴィンテージリカーと静謐な空間をあなたに。</p>
+      <a href="#menu" class="btn-main">DIGITAL MENU</a>
+    </div>
+  </header>
+
+  <!-- JS CAROUSEL: SPECIAL SELECTION -->
+  <section id="menu" class="section">
+    <div class="section-title-wrap">
+      <p class="section-label">RECOMMENDED COCKTAILS</p>
+      <h2 class="section-title">SIGNATURE SELECTION</h2>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-track" id="track">
+        <!-- Slide 1 -->
+        <div class="carousel-slide">
+          <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1200&q=80" alt="L'ÉTOILE Martini">
+          <div class="slide-caption">
+            <span class="slide-cat">SIGNATURE COCKTAIL</span>
+            <h3 class="slide-name">L'ÉTOILE Martini — ¥2,400</h3>
+            <p style="color: var(--text-sub); font-size: 0.85rem;">金箔が揺らめくボタニカル・インフューズド・マティーニ。</p>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="carousel-slide">
+          <img src="https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=1200&q=80" alt="Smoked Old Fashioned">
+          <div class="slide-caption">
+            <span class="slide-cat">WHISKY SELECTION</span>
+            <h3 class="slide-name">Smoked Old Fashioned — ¥2,600</h3>
+            <p style="color: var(--text-sub); font-size: 0.85rem;">桜チップの薫香を込めたシングルモルトカクテル。</p>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="carousel-slide">
+          <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1200&q=80" alt="Vintage Champagne">
+          <div class="slide-caption">
+            <span class="slide-cat">CHAMPAGNE</span>
+            <h3 class="slide-name">Grand Cru Cuvée — ¥3,800 / Glass</h3>
+            <p style="color: var(--text-sub); font-size: 0.85rem;">ソムリエ厳選のグラン・クリュ・シャンパーニュ。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-nav">
+        <button class="carousel-btn" id="prevBtn">&lsaquo;</button>
+        <button class="carousel-btn" id="nextBtn">&rsaquo;</button>
+      </div>
+    </div>
+    <div class="carousel-dots" id="dotsContainer"></div>
+  </section>
+
+  <!-- INSTAGRAM INTEGRATION -->
+  <section class="section">
+    <div class="section-title-wrap">
+      <p class="section-label">INSTAGRAM GALLERY</p>
+      <h2 class="section-title">@bar_letoile_official</h2>
+    </div>
+
+    <div class="insta-grid">
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=600&q=80" alt="Insta 1">
+        <div class="insta-overlay">今宵のスペシャルボトル入荷しました #BARLETOILE</div>
+      </div>
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=600&q=80" alt="Insta 2">
+        <div class="insta-overlay">カウンター席からの夜景とオリジナルカクテル</div>
+      </div>
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1560512823-829485b8bf24?auto=format&fit=crop&w=600&q=80" alt="Insta 3">
+        <div class="insta-overlay">週末限定ジャズ・ライブ・セッション</div>
+      </div>
+      <div class="insta-item">
+        <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=600&q=80" alt="Insta 4">
+        <div class="insta-overlay">プライベート個室（要予約）</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACCESS & MAP -->
+  <section class="section">
+    <div class="access-wrapper">
+      <div class="access-info">
+        <h3>LOCATION & INFO</h3>
+        <ul class="info-list">
+          <li><span>営業時間</span> 19:00 - 03:00 (L.O. 02:30)</li>
+          <li><span>定休日</span> 日曜日・祝日</li>
+          <li><span>カバーチャージ</span> ¥1,500 / Person</li>
+          <li><span>ドレスコード</span> スマートカジュアル</li>
+          <li><span>住所</span> 東京都港区北青山 3-X-X B1F</li>
+          <li><span>電話番号</span> 03-XXXX-XXXX</li>
+        </ul>
+      </div>
+      <div>
+        <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.7479754723146!2d139.7077833!3d35.6672222!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQ0JzAy.0iTiAxMznCsDQyJzI4LjAiRQ!5e0!3m2!1sja!2sjp!4v1600000000000" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p class="footer-logo">BAR L'ÉTOILE</p>
+    <p>&copy; BAR L'ÉTOILE. All Rights Reserved. Produced by Studio Xavier.</p>
+  </footer>
+
+  <!-- JAVASCRIPT FOR CAROUSEL -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const track = document.getElementById('track');
+      const slides = Array.from(track.children);
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dotsContainer = document.getElementById('dotsContainer');
+      let currentIndex = 0;
+
+      // ドット生成
+      slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(index));
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = document.querySelectorAll('.dot');
+
+      function updateSlide() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+      }
+
+      function goToSlide(index) {
+        currentIndex = index;
+UpdateSlide();
+      }
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlide();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlide();
+      });
+
+      // 自動再生 (5秒間隔)
+      setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlide();
+      }, 5000);
+    });
+  </script>
+</body>
+</html>
