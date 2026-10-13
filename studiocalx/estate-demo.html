@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XAVIER REAL ESTATE | 理想の空間と出会う</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #07080a;
+      --bg-elev: #101216;
+      --bg-card: #14171c;
+      --line: rgba(212, 175, 55, 0.22);
+      --gold: #d4af37;
+      --gold-soft: #c4a35a;
+      --gold-dim: #8c7323;
+      --text: #f4f1ea;
+      --muted: #9ca3af;
+      --danger: #c9a227;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Noto Sans JP", sans-serif;
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    .screen-only { display: block; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 36px;
+      background: rgba(7, 8, 10, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      font-family: Cinzel, serif;
+      letter-spacing: 0.22em;
+      font-size: 13px;
+      color: var(--gold);
+    }
+
+    nav { display: flex; gap: 22px; flex-wrap: wrap; }
+
+    nav a {
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+
+    nav a:hover { color: var(--gold); }
+
+    .hero {
+      position: relative;
+      min-height: 78vh;
+      display: grid;
+      place-items: center;
+      padding: 72px 20px 56px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7,8,10,0.35) 0%, rgba(7,8,10,0.88) 100%),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;
+    }
+
+    .hero-inner {
+      position: relative;
+      width: min(1080px, 100%);
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-family: Cinzel, serif;
+      color: var(--gold);
+      letter-spacing: 0.38em;
+      font-size: 11px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: "Noto Serif JP", serif;
+      font-weight: 400;
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .hero p.lead {
+      color: var(--muted);
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    .search-panel {
+      background: rgba(16, 18, 22, 0.86);
+      border: 1px solid var(--line);
+      padding: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) auto;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .field label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--gold-soft);
+      margin-bottom: 6px;
+    }
+
+    .field select {
+      width: 100%;
+      background: #0b0d11;
+      color: var(--text);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      padding: 11px 10px;
+      font-family: inherit;
+      font-size: 13px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      font-family: inherit;
+      letter-spacing: 0.12em;
+      transition: 0.25s ease;
+    }
+
+    .btn-gold {
+      background: linear-gradient(180deg, #e3c56a, #b8942b);
+      color: #1a1406;
+      font-weight: 700;
+      padding: 12px 22px;
+    }
+
+    .btn-gold:hover { filter: brightness(1.08); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 11px 16px;
+      font-size: 12px;
+    }
+
+    .btn-ghost:hover { background: rgba(212, 175, 55, 0.12); }
+
+    .section {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 72px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .section-head h2 {
+      font-family: Cinzel, serif;
+      font-size: 18px;
+      letter-spacing: 0.22em;
+      color: var(--gold);
+    }
+
+    .section-head p { color: var(--muted); font-size: 13px; }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .property {
+      background: var(--bg-card);
+      border: 1px solid rgba(212, 175, 55, 0.16);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .property.hidden { display: none; }
+
+    .property img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .property-body { padding: 20px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .tag {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: var(--gold-soft);
+      padding: 3px 8px;
+    }
+
+    .property h3 {
+      font-family: "Noto Serif JP", serif;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .rent {
+      font-size: 22px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .rent span { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 4px; }
+
+    .meta {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .actions .btn { font-size: 12px; min-height: 42px; padding: 8px 10px; }
+
+    .consult {
+      background:
+        radial-gradient(circle at top right, rgba(212,175,55,0.12), transparent 40%),
+        var(--bg-elev);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .consult-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      padding: 28px;
+    }
+
+    .panel h3 {
+      font-family: Cinzel, serif;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .panel p { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+
+    form { display: grid; gap: 10px; }
+
+    input, textarea, select.form-input {
+      width: 100%;
+      background: #0b0d11;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      color: var(--text);
+      padding: 11px 12px;
+      font-family: inherit;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .line-btn {
+      background: #06c755;
+      color: #04150a;
+      font-weight: 700;
+      padding: 12px 18px;
+      width: 100%;
+    }
+
+    footer {
+      text-align: center;
+      padding: 32px 16px 48px;
+      color: #6b7280;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+      padding: 20px;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      width: min(480px, 100%);
+      background: #12141a;
+      border: 1px solid var(--gold);
+      padding: 28px;
+    }
+
+    .modal-card h3 { font-family: "Noto Serif JP", serif; margin-bottom: 8px; }
+    .modal-card p { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+
+    .mysoku {
+      display: none;
+    }
+
+    @media (max-width: 960px) {
+      .search-panel, .property-grid, .consult-grid {
+        grid-template-columns: 1fr;
+      }
+      header { flex-direction: column; }
+    }
+
+    @page { size: A4 portrait; margin: 0; }
+
+    @media print {
+      .screen-only, header, .hero, .section, footer, .modal { display: none !important; }
+      body { background: #fff; }
+      .mysoku.active {
+        display: block !important;
+        width: 210mm;
+        min-height: 297mm;
+        padding: 12mm 12mm 10mm;
+        color: #1a1a1a;
+        background: #fff;
+        font-family: "Noto Sans JP", sans-serif;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+
+    .mysoku-sheet {
+      border: 1.4pt solid #1a1a1a;
+      min-height: 273mm;
+      padding: 8mm;
+    }
+
+    .mysoku-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 2.2pt solid #c9a227;
+      padding-bottom: 4mm;
+      margin-bottom: 5mm;
+    }
+
+    .mysoku-brand {
+      font-family: Cinzel, serif;
+      letter-spacing: 0.18em;
+      font-size: 11pt;
+    }
+
+    .mysoku-label {
+      font-size: 9pt;
+      letter-spacing: 0.3em;
+      color: #8a6d12;
+    }
+
+    .mysoku-title {
+      font-size: 16pt;
+      font-weight: 700;
+      margin-bottom: 3mm;
+    }
+
+    .mysoku-hero {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 5mm;
+      margin-bottom: 5mm;
+    }
+
+    .mysoku-hero img {
+      width: 100%;
+      height: 62mm;
+      object-fit: cover;
+      border: 0.4pt solid #bbb;
+    }
+
+    .floorplan {
+      border: 0.4pt solid #bbb;
+      height: 62mm;
+      padding: 4mm;
+      position: relative;
+      background: #f7f4ec;
+    }
+
+    .floorplan span {
+      position: absolute;
+      font-size: 8pt;
+      color: #555;
+    }
+
+    .room {
+      position: absolute;
+      border: 0.7pt solid #333;
+      background: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 8pt;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9.5pt;
+      margin-bottom: 5mm;
+    }
+
+    .spec-table th, .spec-table td {
+      border: 0.4pt solid #bbb;
+      padding: 2.2mm 3mm;
+      text-align: left;
+    }
+
+    .spec-table th {
+      width: 28%;
+      background: #f3ead0;
+      font-weight: 600;
+    }
+
+    .mysoku-notes {
+      font-size: 9pt;
+      line-height: 1.6;
+      margin-bottom: 6mm;
+    }
+
+    .mysoku-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 0.6pt solid #ccc;
+      padding-top: 4mm;
+      font-size: 8.5pt;
+    }
+
+    .mysoku-foot img { width: 22mm; height: 22mm; }
+  </style>
+</head>
+<body>
+  <div class="screen-only">
+    <header>
+        <a href="index.html" style="color: var(--text-sub, #666); text-decoration: none; font-size: 0.8rem; font-family: sans-serif; letter-spacing: 0.05em;">← PORTFOLIO</a>
+      <div class="brand">XAVIER REAL ESTATE</div>
+      <nav>
+        <a href="#search">SEARCH</a>
+        <a href="#properties">PROPERTIES</a>
+        <a href="#consult">LINE / VISIT</a>
+      </nav>
+    </header>
+
+    <section class="hero" id="search">
+      <div class="hero-inner">
+        <div class="eyebrow">PRIVATE RESIDENCE SEARCH</div>
+        <h1>理想の空間と出会う、<br>新しい部屋探し</h1>
+        <p class="lead">都心の上質な住まいを、WebとA4マイソクで一気通貫に。</p>
+        <form class="search-panel" id="searchForm">
+          <div class="field">
+            <label>AREA</label>
+            <select id="area">
+              <option value="all">エリアを選択</option>
+              <option value="minato">港区 / 麻布十番</option>
+              <option value="setagaya">世田谷 / 三軒茶屋</option>
+              <option value="meguro">目黒 / 中目黒</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>RENT</label>
+            <select id="rent">
+              <option value="all">家賃上限</option>
+              <option value="150">15万円以下</option>
+              <option value="180">18万円以下</option>
+              <option value="300">30万円以下</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>LAYOUT</label>
+            <select id="layout">
+              <option value="all">間取り</option>
+              <option value="1k">1K</option>
+              <option value="1ldk">1LDK</option>
+              <option value="2ldk">2LDK</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>WALK</label>
+            <select id="walk">
+              <option value="all">駅徒歩</option>
+              <option value="5">徒歩5分以内</option>
+              <option value="7">徒歩7分以内</option>
+              <option value="10">徒歩10分以内</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-gold">物件を探す</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="properties">
+      <div class="section-head">
+        <div>
+          <h2>FEATURED RESIDENCES</h2>
+          <p>おすすめ物件 — Web閲覧からマイソクPDF・内見予約まで。</p>
+        </div>
+        <p id="resultCount">3件表示</p>
+      </div>
+
+      <div class="property-grid">
+        <article class="property"
+          data-area="minato"
+          data-rent="248000"
+          data-layout="1ldk"
+          data-walk="4">
+          <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80" alt="デザイナーズマンション 麻布十番">
+          <div class="property-body">
+            <div class="tags">
+              <span class="tag">デザイナーズ</span>
+              <span class="tag">南向き</span>
+              <span class="tag">2023年築</span>
+            </div>
+            <h3>THE ATELIER AZABU</h3>
+            <div class="rent">¥248,000 <span>/ 月（管理費込）</span></div>
+            <p class="meta">1LDK / 54.8㎡ ・ 麻布十番駅 徒歩4分</p>
+            <p class="meta">黒と真鍮を基調にしたラウンジ付きデザイナーズレジデンス。</p>
+            <div class="actions">
+              <button class="btn btn-gold" type="button" onclick="printMysoku('azabu')">マイソク（A4物件概要図PDF）を出力</button>
+              <button class="btn btn-ghost" type="button" onclick="openVisit('THE ATELIER AZABU')">内見予約</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="property"
+          data-area="setagaya"
+          data-rent="168000"
+          data-layout="2ldk"
+          data-walk="7">
+          <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80" alt="ペット可リノベーション物件">
+          <div class="property-body">
+            <div class="tags">
+              <span class="tag">ペット可</span>
+              <span class="tag">フルリノベ</span>
+              <span class="tag">専用庭</span>
+            </div>
+            <h3>RENOVATE HOUSE SETAGAYA</h3>
+            <div class="rent">¥168,000 <span>/ 月（管理費込）</span></div>
+            <p class="meta">2LDK / 61.2㎡ ・ 三軒茶屋駅 徒歩7分</p>
+            <p class="meta">躯体現しと無垢床を活かした、愛犬・愛猫と暮らすリノベーション住戸。</p>
+            <div class="actions">
+              <button class="btn btn-gold" type="button" onclick="printMysoku('setagaya')">マイソク（A4物件概要図PDF）を出力</button>
+              <button class="btn btn-ghost" type="button" onclick="openVisit('RENOVATE HOUSE SETAGAYA')">内見予約</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="property"
+          data-area="meguro"
+          data-rent="129000"
+          data-layout="1k"
+          data-walk="6">
+          <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80" alt="敷礼ゼロ即入居可物件">
+          <div class="property-body">
+            <div class="tags">
+              <span class="tag">敷金ゼロ</span>
+              <span class="tag">礼金ゼロ</span>
+              <span class="tag">即入居可</span>
+            </div>
+            <h3>ZERO START NAKAMEGURO</h3>
+            <div class="rent">¥129,000 <span>/ 月（管理費込）</span></div>
+            <p class="meta">1K / 28.4㎡ ・ 中目黒駅 徒歩6分</p>
+            <p class="meta">初期費用を抑えたスマート入居。家具家電付きで翌週からの新生活に対応。</p>
+            <div class="actions">
+              <button class="btn btn-gold" type="button" onclick="printMysoku('meguro')">マイソク（A4物件概要図PDF）を出力</button>
+              <button class="btn btn-ghost" type="button" onclick="openVisit('ZERO START NAKAMEGURO')">内見予約</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="consult" id="consult">
+      <div class="section">
+        <div class="section-head">
+          <div>
+            <h2>CONSULTATION</h2>
+            <p>LINEで気軽に相談、もしくは店舗でのご案内予約。</p>
+          </div>
+        </div>
+        <div class="consult-grid">
+          <div class="panel">
+            <h3>LINE CONSULTATION</h3>
+            <p>希望条件を送るだけで、担当コンシェルジュが候補物件とマイソクを返信します。</p>
+            <a class="btn line-btn" href="https://line.me/R/ti/p/@xavier-estate" target="_blank" rel="noopener">LINEで相談する</a>
+          </div>
+          <div class="panel">
+            <h3>STORE VISIT</h3>
+            <p>青山サロンでの個別コンサルティング。ご来店日時をご指定ください。</p>
+            <form id="visitStoreForm">
+              <input class="form-input" name="name" placeholder="お名前" required>
+              <input class="form-input" type="tel" name="tel" placeholder="電話番号" required>
+              <input class="form-input" type="datetime-local" name="when" required>
+              <button class="btn btn-gold" type="submit">来店予約を送信</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>© 2026 XAVIER REAL ESTATE / Powered by Studio Xavier DTP System</footer>
+  </div>
+
+  <div class="modal" id="visitModal" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h3>内見予約</h3>
+      <p id="visitProperty">物件を選択してください。</p>
+      <form id="visitForm">
+        <input class="form-input" name="name" placeholder="お名前" required>
+        <input class="form-input" type="tel" name="tel" placeholder="電話番号" required>
+        <input class="form-input" type="datetime-local" name="when" required>
+        <button class="btn btn-gold" type="submit">予約を確定する</button>
+        <button class="btn btn-ghost" type="button" onclick="closeVisit()">閉じる</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- A4 マイソク：デザイナーズ -->
+  <section class="mysoku" id="mysoku-azabu">
+    <div class="mysoku-sheet">
+      <div class="mysoku-head">
+        <div>
+          <div class="mysoku-label">RENTAL PROPERTY SHEET</div>
+          <div class="mysoku-brand">XAVIER REAL ESTATE</div>
+        </div>
+        <div>物件番号 XA-2401 / A4マイソク</div>
+      </div>
+      <div class="mysoku-title">THE ATELIER AZABU　デザイナーズマンション</div>
+      <div class="mysoku-hero">
+        <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80" alt="">
+        <div class="floorplan">
+          <div class="room" style="left:6%;top:10%;width:55%;height:48%;">LDK 21.4㎡</div>
+          <div class="room" style="left:64%;top:10%;width:30%;height:30%;">BED</div>
+          <div class="room" style="left:64%;top:44%;width:30%;height:24%;">WIC</div>
+          <div class="room" style="left:6%;top:62%;width:28%;height:26%;">BALCONY</div>
+          <div class="room" style="left:36%;top:62%;width:28%;height:26%;">UB</div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>家賃 / 管理費</th><td>248,000円（管理費込）</td></tr>
+        <tr><th>間取り / 専有</th><td>1LDK / 54.8㎡</td></tr>
+        <tr><th>交通</th><td>東京メトロ南北線「麻布十番」駅 徒歩4分</td></tr>
+        <tr><th>所在 / 階</th><td>港区東麻布 / 11階（14階建）</td></tr>
+        <tr><th>築年 / 構造</th><td>2023年3月 / RC造</td></tr>
+        <tr><th>敷金 / 礼金</th><td>1ヶ月 / 1ヶ月</td></tr>
+      </table>
+      <p class="mysoku-notes">南向き角住戸。真鍮ディテールのオリジナルキッチン、24時間有人管理、ラウンジ・ゲストルーム完備。デザイナーズ、南向き、ペット相談（小型犬）。</p>
+      <div class="mysoku-foot">
+        <div>
+          青山サロン　東京都港区南青山1-1-1<br>
+          TEL 03-0000-0000　内見・資料請求はQRから
+        </div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://example.com/estate-demo.html" alt="QR">
+      </div>
+    </div>
+  </section>
+
+  <!-- A4 マイソク：ペット可 -->
+  <section class="mysoku" id="mysoku-setagaya">
+    <div class="mysoku-sheet">
+      <div class="mysoku-head">
+        <div>
+          <div class="mysoku-label">RENTAL PROPERTY SHEET</div>
+          <div class="mysoku-brand">XAVIER REAL ESTATE</div>
+        </div>
+        <div>物件番号 XA-2408 / A4マイソク</div>
+      </div>
+      <div class="mysoku-title">RENOVATE HOUSE SETAGAYA　ペット可リノベーション</div>
+      <div class="mysoku-hero">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80" alt="">
+        <div class="floorplan">
+          <div class="room" style="left:6%;top:8%;width:40%;height:40%;">LDK 16.8㎡</div>
+          <div class="room" style="left:50%;top:8%;width:44%;height:28%;">洋室A</div>
+          <div class="room" style="left:50%;top:40%;width:44%;height:28%;">洋室B</div>
+          <div class="room" style="left:6%;top:52%;width:40%;height:36%;">専用庭</div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>家賃 / 管理費</th><td>168,000円（管理費込）</td></tr>
+        <tr><th>間取り / 専有</th><td>2LDK / 61.2㎡</td></tr>
+        <tr><th>交通</th><td>東急田園都市線「三軒茶屋」駅 徒歩7分</td></tr>
+        <tr><th>所在 / 階</th><td>世田谷区太子堂 / 1階（3階建）</td></tr>
+        <tr><th>築年 / 構造</th><td>1998年築・2025年フルリノベ / 木造</td></tr>
+        <tr><th>敷金 / 礼金</th><td>2ヶ月（ペット敷金含む） / 1ヶ月</td></tr>
+      </table>
+      <p class="mysoku-notes">室内犬・猫各2匹まで相談可。足洗い場・専用庭付き。無垢オーク床、造作棚、断熱改修済み。楽器相談不可。</p>
+      <div class="mysoku-foot">
+        <div>
+          青山サロン　東京都港区南青山1-1-1<br>
+          TEL 03-0000-0000　内見・資料請求はQRから
+        </div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://example.com/estate-demo.html" alt="QR">
+      </div>
+    </div>
+  </section>
+
+  <!-- A4 マイソク：敷礼ゼロ -->
+  <section class="mysoku" id="mysoku-meguro">
+    <div class="mysoku-sheet">
+      <div class="mysoku-head">
+        <div>
+          <div class="mysoku-label">RENTAL PROPERTY SHEET</div>
+          <div class="mysoku-brand">XAVIER REAL ESTATE</div>
+        </div>
+        <div>物件番号 XA-2412 / A4マイソク</div>
+      </div>
+      <div class="mysoku-title">ZERO START NAKAMEGURO　敷礼ゼロ・即入居可</div>
+      <div class="mysoku-hero">
+        <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80" alt="">
+        <div class="floorplan">
+          <div class="room" style="left:8%;top:12%;width:84%;height:42%;">洋室 9.1畳</div>
+          <div class="room" style="left:8%;top:58%;width:38%;height:28%;">K</div>
+          <div class="room" style="left:50%;top:58%;width:20%;height:28%;">UB</div>
+          <div class="room" style="left:74%;top:58%;width:18%;height:28%;">W</div>
+        </div>
+      </div>
+      <table class="spec-table">
+        <tr><th>家賃 / 管理費</th><td>129,000円（管理費込）</td></tr>
+        <tr><th>間取り / 専有</th><td>1K / 28.4㎡</td></tr>
+        <tr><th>交通</th><td>東急東横線「中目黒」駅 徒歩6分</td></tr>
+        <tr><th>所在 / 階</th><td>目黒区青葉台 / 4階（7階建）</td></tr>
+        <tr><th>築年 / 構造</th><td>2018年 / SRC造</td></tr>
+        <tr><th>敷金 / 礼金</th><td>0円 / 0円（フリーレント1ヶ月）</td></tr>
+      </table>
+      <p class="mysoku-notes">即入居可。家具家電付き、初期費用を最小化したゼロスタートプラン。保証会社加入必須。短期（2年未満）相談可。</p>
+      <div class="mysoku-foot">
+        <div>
+          青山サロン　東京都港区南青山1-1-1<br>
+          TEL 03-0000-0000　内見・資料請求はQRから
+        </div>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://example.com/estate-demo.html" alt="QR">
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function printMysoku(id) {
+      document.querySelectorAll(".mysoku").forEach(function (el) {
+        el.classList.remove("active");
+      });
+      var sheet = document.getElementById("mysoku-" + id);
+      if (!sheet) return;
+      sheet.classList.add("active");
+      window.print();
+    }
+
+    function openVisit(name) {
+      document.getElementById("visitProperty").textContent = name + " の内見希望日をご指定ください。";
+      document.getElementById("visitModal").classList.add("open");
+    }
+
+    function closeVisit() {
+      document.getElementById("visitModal").classList.remove("open");
+    }
+
+    document.getElementById("visitModal").addEventListener("click", function (e) {
+      if (e.target.id === "visitModal") closeVisit();
+    });
+
+    document.getElementById("visitForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("内見予約を受け付けました。担当者より確認のご連絡をいたします。");
+      closeVisit();
+      e.target.reset();
+    });
+
+    document.getElementById("visitStoreForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      alert("来店予約を受け付けました。サロンにてお待ちしております。");
+      e.target.reset();
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      var area = document.getElementById("area").value;
+      var rentMax = document.getElementById("rent").value;
+      var layout = document.getElementById("layout").value;
+      var walk = document.getElementById("walk").value;
+      var cards = document.querySelectorAll(".property");
+      var shown = 0;
+
+      cards.forEach(function (card) {
+        var ok = true;
+        if (area !== "all" && card.dataset.area !== area) ok = false;
+        if (rentMax !== "all" && Number(card.dataset.rent) > Number(rentMax) * 10000) ok = false;
+        if (layout !== "all" && card.dataset.layout !== layout) ok = false;
+        if (walk !== "all" && Number(card.dataset.walk) > Number(walk)) ok = false;
+        card.classList.toggle("hidden", !ok);
+        if (ok) shown += 1;
+      });
+
+      document.getElementById("resultCount").textContent = shown + "件表示";
+      document.getElementById("properties").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>

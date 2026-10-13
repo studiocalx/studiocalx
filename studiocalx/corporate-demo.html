@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARTNERS Inc. | 次世代ビジネスソリューション＆イノベーション</title>
+  <meta name="description" content="変革を駆動する、真のパートナーシップを。">
+
+  <!-- Google Fonts: Syncopate & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Syncopate:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #080a0f;
+      --bg-card: #121620;
+      --text-main: #ffffff;
+      --text-muted: #8a94a6;
+      --accent-blue: #0066ff;
+      --accent-cyan: #00f0ff;
+      --border-line: rgba(255, 255, 255, 0.1);
+      --font-display: 'Syncopate', sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* HEADER */
+    .header {
+      position: fixed;
+      top: 0; width: 100%;
+      padding: 1.5rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(8, 10, 15, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-line);
+    }
+
+    .brand-logo {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+    }
+
+    .nav-menu a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .nav-menu a:hover { color: var(--accent-cyan); }
+
+    /* HERO SECTION WITH BACKGROUND IMAGE */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 6vw;
+      overflow: hidden;
+    }
+
+    /* 背景ビジュアル画像＆グラデーション重ね合わせ */
+    .hero-bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.25;
+      filter: contrast(120%) brightness(80%);
+      z-index: 0;
+    }
+
+    .hero-glow {
+      position: absolute;
+      top: 20%; right: -10%;
+      width: 50vw; height: 50vw;
+      background: radial-gradient(circle, rgba(0, 240, 255, 0.2) 0%, rgba(0, 102, 255, 0.08) 50%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-title-bg {
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 20vw, 22rem);
+      font-weight: 800;
+      color: rgba(255, 255, 255, 0.03);
+      line-height: 0.8;
+      top: 15%; left: -2vw;
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-tag {
+      font-family: var(--font-display);
+      color: var(--accent-cyan);
+      font-size: 0.85rem;
+      letter-spacing: 0.3em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-heading {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      background: linear-gradient(135deg, #ffffff 0%, #a0a5b5 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* SECTION COMMON */
+    .section-padding { padding: 8rem 6vw; position: relative; z-index: 2; }
+
+    .section-title-wrap { margin-bottom: 4rem; }
+
+    .section-num {
+      font-family: var(--font-display);
+      color: var(--accent-blue);
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      letter-spacing: 0.05em;
+    }
+
+    /* VALUE GRID WITH IMAGES */
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-line);
+      overflow: hidden;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .value-img-wrap {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .value-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+      transition: transform 0.6s ease, opacity 0.6s ease;
+    }
+
+    .value-card:hover .value-img-wrap img {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+
+    .value-card-body {
+      padding: 2.5rem 2rem;
+    }
+
+    .value-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 4px; height: 0%;
+      background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue));
+      transition: height 0.4s ease;
+      z-index: 3;
+    }
+
+    .value-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(0, 240, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+
+    .value-card:hover::before { height: 100%; }
+
+    .value-icon {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--accent-cyan);
+      margin-bottom: 0.8rem;
+    }
+
+    /* COMPANY PROFILE GRID WITH IMAGE */
+    .company-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .company-grid { grid-template-columns: 1fr; }
+    }
+
+    .company-img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      border-radius: 2px;
+      border: 1px solid var(--border-line);
+      box-shadow: -20px 20px 0px rgba(0, 102, 255, 0.2);
+    }
+
+    .company-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .company-table th, .company-table td {
+      border-bottom: 1px solid var(--border-line);
+      padding: 1.2rem 0.8rem;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .company-table th {
+      width: 30%;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* HISTORY (沿革タイムライン) */
+    .history-timeline {
+      position: relative;
+      border-left: 2px solid var(--border-line);
+      margin-left: 1rem;
+      padding-left: 2.5rem;
+    }
+
+    .history-item {
+      position: relative;
+      margin-bottom: 3rem;
+    }
+
+    .history-item::before {
+      content: '';
+      position: absolute;
+      left: -2.95rem; top: 0.4rem;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    .history-year {
+      font-family: var(--font-display);
+      color: var(--accent-cyan);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    /* RECRUIT */
+    .recruit-box {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.15) 0%, rgba(0, 240, 255, 0.05) 100%);
+      border: 1px solid var(--border-line);
+      padding: 5rem 3rem;
+      text-align: center;
+      border-radius: 4px;
+    }
+
+    .btn-action {
+      display: inline-block;
+      padding: 1.2rem 3rem;
+      background: var(--accent-blue);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-decoration: none;
+      font-weight: 700;
+      margin-top: 2rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
+    }
+
+    .btn-action:hover {
+      background: var(--accent-cyan);
+      color: #000;
+      box-shadow: 0 10px 30px rgba(0, 240, 255, 0.5);
+    }
+
+    /* FOOTER */
+    .footer {
+      border-top: 1px solid var(--border-line);
+      padding: 4rem 6vw 2rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* INTERACTION REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <a href="#" class="brand-logo">PARTNERS</a>
+    <ul class="nav-menu">
+      <li><a href="#value">VALUE</a></li>
+      <li><a href="#about">ABOUT</a></li>
+      <li><a href="#history">HISTORY</a></li>
+      <li><a href="#recruit">RECRUIT</a></li>
+    </ul>
+  </header>
+
+  <!-- HERO SECTION WITH BG IMAGE -->
+  <section class="hero">
+    <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1600&q=80" alt="Cyber Background" class="hero-bg-img">
+    <div class="hero-glow"></div>
+    <div class="hero-title-bg" id="heroBgText">PARTNERS</div>
+    
+    <div class="hero-content">
+      <p class="hero-tag">B2B INNOVATION PARTNER</p>
+      <h1 class="hero-heading">TRANSFORMING<br>BUSINESS REALITY.</h1>
+      <p style="color: var(--text-muted); max-width: 550px; font-size: 1.05rem;">
+        私たちは単なる受託開発企業ではありません。クライアントのビジネスモデルそのものを再定義し、確かな成長を描く共創型イノベーションパートナーです。
+      </p>
+    </div>
+  </section>
+
+  <!-- 1. CORE VALUE (画像付きカード) -->
+  <section id="value" class="section-padding">
+    <div class="section-title-wrap reveal">
+      <span class="section-num">01 / OUR STRENGTHS</span>
+      <h2 class="section-title">WHY PARTNERS?</h2>
+      <p style="color: var(--text-muted); margin-top: 0.5rem;">他社には真似できない、私たちが選ばれる3つの独自性</p>
+    </div>
+
+    <div class="value-grid">
+      <!-- Card 1 -->
+      <div class="value-card reveal">
+        <div class="value-img-wrap">
+          <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Partnership & Strategy">
+        </div>
+        <div class="value-card-body">
+          <div class="value-icon">01.</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.8rem;">事業構想からのハンズオン伴走</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">
+            要件定義された仕様を作るだけではなく、事業立ち上げ・マネタイズ戦略の設計段階から経営陣と直接対話し、成功まで伴走します。
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="value-card reveal">
+        <div class="value-img-wrap">
+          <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=800&q=80" alt="Design & Prototype">
+        </div>
+        <div class="value-card-body">
+          <div class="value-icon">02.</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.8rem;">高速プロトタイピング＆DTP/WEB統合</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">
+            Web開発から印刷媒体（POP/パンフレット）まで、ブランドの世界観をミリ単位で統一し、最速で市場へプロダクトを投入します。
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="value-card reveal">
+        <div class="value-img-wrap">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80" alt="AI & Data Intelligence">
+        </div>
+        <div class="value-card-body">
+          <div class="value-icon">03.</div>
+          <h3 style="font-size: 1.2rem; margin-bottom: 0.8rem;">AI＆データ駆動の次世代開発</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">
+            最新のAIソリューションやデータ分析基盤を組み込み、リリース後も継続的に収益性を最大化するグロースハック体制を構築。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. COMPANY PROFILE (画像と対比させた会社概要) -->
+  <section id="about" class="section-padding" style="background: rgba(255,255,255,0.01);">
+    <div class="section-title-wrap reveal">
+      <span class="section-num">02 / OVERVIEW</span>
+      <h2 class="section-title">COMPANY PROFILE</h2>
+    </div>
+
+    <div class="company-grid reveal">
+      <div>
+        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80" alt="Partners Architecture Office" class="company-img">
+      </div>
+      <div>
+        <table class="company-table">
+          <tr><th>会社名</th><td>株式会社PARTNERS (PARTNERS Inc.)</td></tr>
+          <tr><th>設立</th><td>2020年4月1日</td></tr>
+          <tr><th>代表者</th><td>代表取締役 ディレクター</td></tr>
+          <tr><th>資本金</th><td>50,000,000円</td></tr>
+          <tr><th>所在地</th><td>〒100-0005 東京都千代田区丸の内 1-X-X PARTNERS TOWER 18F</td></tr>
+          <tr><th>事業内容</th><td>B2B Web/DTPトータルディレクション、DXコンサルティング、新規事業開発支援</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HISTORY (沿革) -->
+  <section id="history" class="section-padding">
+    <div class="section-title-wrap reveal">
+      <span class="section-num">03 / OUR JOURNEY</span>
+      <h2 class="section-title">COMPANY HISTORY</h2>
+    </div>
+
+    <div class="history-timeline reveal" style="max-width: 800px; margin: 0 auto;">
+      <div class="history-item">
+        <div class="history-year">2020.04</div>
+        <p style="font-weight: 600;">株式会社PARTNERS 設立</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">クリエイティブディレクションおよびWeb開発事業を開始。</p>
+      </div>
+
+      <div class="history-item">
+        <div class="history-year">2022.09</div>
+        <p style="font-weight: 600;">DTP/WEB統合デザインシステム「Studio Xavier」リリース</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Webと印刷物の版面設計を完全に共通化する独自フレームワークを確立。</p>
+      </div>
+
+      <div class="history-item">
+        <div class="history-year">2024.01</div>
+        <p style="font-weight: 600;">資本金を5,000万円に増資、大手B2B事業者のDX支援に本格参入</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">年間取引社数が100社を突破。</p>
+      </div>
+
+      <div class="history-item">
+        <div class="history-year">2026.04</div>
+        <p style="font-weight: 600;">AI・次世代インタラクションデザイン部門を発足</p>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">よりシネマティックで高付加価値なWebプラットフォームの提供を開始。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. RECRUIT -->
+  <section id="recruit" class="section-padding">
+    <div class="recruit-box reveal">
+      <span class="section-num">04 / CAREERS</span>
+      <h2 style="font-family: var(--font-display); font-size: 2.5rem; margin: 0.5rem 0 1rem;">JOIN OUR TEAM</h2>
+      <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto; font-size: 0.95rem;">
+        常識に挑み、クライアントと共に未来をつくるクリエイター、エンジニア、ディレクターを募集しています。
+      </p>
+      <a href="#" class="btn-action" onclick="alert('デモ用：採用エントリーフォームへ遷移します')">VIEW OPEN POSITIONS</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <a href="#" class="brand-logo" style="font-size: 1rem;">PARTNERS</a>
+    <p>&copy; PARTNERS Inc. Directed by Studio Xavier.</p>
+  </footer>
+
+  <!-- JAVASCRIPT: SCROLL INTERACTION & PARALLAX -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. スクロール連動の要素フェードイン (Intersection Observer)
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      // 2. 背景テキストのパララックス移動
+      const bgText = document.getElementById('heroBgText');
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        if (scrolled < 1000) {
+          bgText.style.transform = `translateX(${-scrolled * 0.3}px)`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

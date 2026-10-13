@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>街と暮らしの案内所｜くらしまち不動産</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-main: #f5f4f0; /* 温かみのある和紙・土壁のような生成り色 */
+      --bg-surface: #ffffff;
+      --text-main: #2b2b2b;
+      --text-muted: #666666;
+      --brand-green: #1b3a2b; /* 深い鎮守の森の緑 */
+      --brand-accent: #c28d4b; /* 伝統的な木肌・真鍮色 */
+      --border-color: #e0ded8;
+      --shadow-subtle: 0 8px 24px rgba(0,0,0,0.04);
+      --font-serif: 'Noto Serif JP', serif;
+      --font-sans: 'Noto Sans JP', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.8;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Top Announcement Bar */
+    .top-bar {
+      background: var(--brand-green);
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 0.5rem 0;
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* Header */
+    .header {
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--brand-green);
+      letter-spacing: 0.08em;
+    }
+
+    .brand-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-left: 1px solid var(--border-color);
+      padding-left: 0.8rem;
+    }
+
+    .nav-items {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-items a {
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-items a:hover { color: var(--brand-accent); }
+
+    .btn-reserve {
+      background: var(--brand-accent);
+      color: #fff !important;
+      padding: 0.6rem 1.4rem;
+      border-radius: 2px;
+      font-size: 0.85rem;
+    }
+
+    /* Hero Section - 感情に訴えるファーストビュー */
+    .hero {
+      position: relative;
+      background: linear-gradient(rgba(27, 58, 43, 0.4), rgba(27, 58, 43, 0.7)),
+                  url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      height: 560px;
+      display: flex;
+      align-items: center;
+      color: #fff;
+    }
+
+    .hero-box {
+      max-width: 680px;
+      background: rgba(27, 58, 43, 0.85);
+      padding: 3rem;
+      border-left: 4px solid var(--brand-accent);
+      backdrop-filter: blur(4px);
+    }
+
+    .hero-lead {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+      font-weight: 700;
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      line-height: 1.9;
+      opacity: 0.9;
+    }
+
+    /* 物件を探す：ストーリー＆カテゴリー軸 */
+    .section { padding: 5rem 0; }
+
+    .section-header {
+      margin-bottom: 3rem;
+      text-align: center;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      color: var(--brand-green);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* 泥臭くも洗練された「暮らし方」カード */
+    .lifestyle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .lifestyle-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .lifestyle-card:hover {
+      border-color: var(--brand-accent);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .lifestyle-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .lifestyle-title {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      color: var(--brand-green);
+      margin-bottom: 0.6rem;
+    }
+
+    .lifestyle-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* リアルな地域密着物件案内 */
+    .property-section {
+      background: #eeece6;
+      padding: 5rem 0;
+    }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+
+    .property-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+
+    .property-img-wrap {
+      position: relative;
+      height: 230px;
+    }
+
+    .property-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .badge-status {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--brand-green);
+      color: #fff;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.8rem;
+      font-weight: 500;
+    }
+
+    .property-content {
+      padding: 1.8rem;
+    }
+
+    .property-price-main {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--brand-accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .property-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--brand-green);
+    }
+
+    .local-info-box {
+      background: var(--bg-main);
+      padding: 1rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--brand-accent);
+    }
+
+    .local-info-title {
+      font-weight: 700;
+      color: var(--brand-green);
+      margin-bottom: 0.2rem;
+    }
+
+    .property-details {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.8rem;
+    }
+
+    /* 「店主のコラム＆まちの日常」セクション */
+    .local-stories {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 868px) {
+      .local-stories { grid-template-columns: 1fr; }
+    }
+
+    .story-box {
+      background: var(--bg-surface);
+      padding: 2.5rem;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .story-quote {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: var(--brand-green);
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+    }
+
+    .story-author {
+      font-size: 0.85rem;
+      color: var(--brand-accent);
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--brand-green);
+      color: #e0e5e2;
+      padding: 4rem 0 2rem;
+      font-size: 0.85rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 1rem;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+    }
+
+    .credit-link {
+      color: var(--brand-accent);
+      text-decoration: none;
+    }
+
+    .credit-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    阪急千里線・宝塚線・北摂エリア専門｜地元の地主様・店主様と歩んで42年
+  </div>
+
+  <header class="header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-title">くらしまち不動産</span>
+        <span class="brand-tag">街と暮らしの相談所</span>
+      </div>
+      <ul class="nav-items">
+        <li><a href="#lifestyle">暮らし方で探す</a></li>
+        <li><a href="#properties">厳選物件</a></li>
+        <li><a href="#story">店主のまち案内</a></li>
+        <li><a href="#access" class="btn-reserve">店主へ直接相談（予約）</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-box">
+        <h1 class="hero-lead">「この街で人生を終えたい」<br>そう思える家と、出会う場所。</h1>
+        <p class="hero-sub">
+          ネットの検索表には載らない路地の静けさ、夕方の商店街の匂い、信頼できるかかりつけ医の距離。<br>
+          スペック数字の奥にある「本当の住み心地」を、地元の言葉でご案内します。
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Lifestyle Selection -->
+  <section class="section container" id="lifestyle">
+    <div class="section-header">
+      <h2 class="section-title">どんな時間を、この街で過ごしたいですか？</h2>
+      <p class="section-desc">間取りや築年数ではなく、「これからの暮らしの景色」から探す提案です。</p>
+    </div>
+
+    <div class="lifestyle-grid">
+      <div class="lifestyle-card">
+        <span class="lifestyle-icon">🌲</span>
+        <h3 class="lifestyle-title">静寂と緑地に包まれる</h3>
+        <p class="lifestyle-text">服部緑地や千里山の緑に近く、車の羽音が届かない静かな住宅街。読書と散歩を愛する方に。</p>
+      </div>
+      <div class="lifestyle-card">
+        <span class="lifestyle-icon">🍵</span>
+        <h3 class="lifestyle-title">歴史ある平屋・古民家</h3>
+        <p class="lifestyle-text">昭和の職人仕事が残る木組みの家。庭の柿の木や日当たりの良い縁側で、豊かな時間を刻む。</p>
+      </div>
+      <div class="lifestyle-card">
+        <span class="lifestyle-icon">🛍️</span>
+        <h3 class="lifestyle-title">人情商店街の徒歩圏</h3>
+        <p class="lifestyle-text">惣菜屋の店主と挨拶を交わし、毎朝の豆腐が美味しい。日常の買い物がすべて歩いて完結する街。</p>
+      </div>
+      <div class="lifestyle-card">
+        <span class="lifestyle-icon">🏥</span>
+        <h3 class="lifestyle-title">安心のかかりつけ医・フラットな道</h3>
+        <p class="lifestyle-text">坂道が少なく膝に優しい平坦エリア。信頼できる総合病院やクリニックが身近にある安心感。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Local Properties -->
+  <section class="property-section" id="properties">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">地主様から託された、一押しの足跡</h2>
+        <p class="section-desc">大手ポータルサイトには出回らない、地元密着だからこそお預かりできた物件です。</p>
+      </div>
+
+      <div class="property-grid">
+        
+        <!-- 物件1 -->
+        <article class="property-card">
+          <div class="property-img-wrap">
+            <span class="badge-status">売買・専任物件</span>
+            <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="日本住宅">
+          </div>
+          <div class="property-content">
+            <div class="property-price-main">3,880 万円</div>
+            <h3 class="property-name">千里山東 庭園付き平屋邸宅</h3>
+            
+            <div class="local-info-box">
+              <div class="local-info-title">📍 地元店主の現地コメント</div>
+              「前オーナー様が丹精込めた庭木が見事です。裏手が竹林になっており、夏場でも爽やかな風が抜けます。」
+            </div>
+
+            <div class="property-details">
+              <span>交通: 阪急千里線「千里山」徒歩7分</span>
+              <span>間取: 3LDK + 庭園</span>
+              <span>土地: 185.0㎡ (約56坪)</span>
+              <span>道路: 幅員6m (平坦)</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- 物件2 -->
+        <article class="property-card">
+          <div class="property-img-wrap">
+            <span class="badge-status">賃貸・リノベ</span>
+            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=800&q=80" alt="マンション内装">
+          </div>
+          <div class="property-content">
+            <div class="property-price-main">9.2 万円 <span style="font-size:0.8rem; font-weight:normal;">(管理費5,000円)</span></div>
+            <h3 class="property-name">北千里・青葉台ハイツ 3階</h3>
+            
+            <div class="local-info-box">
+              <div class="local-info-title">📍 地元店主の現地コメント</div>
+              「バス停まで徒歩2分で始発に乗れます。1階に親切な個人薬局が入っており、体調不良時も安心です。」
+            </div>
+
+            <div class="property-details">
+              <span>交通: 阪急千里線「北千里」バス5分</span>
+              <span>間取: 2LDK (58.0㎡)</span>
+              <span>構造: RC造 3階部分</span>
+              <span>買い物: スーパーまで徒歩3分</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Note記事を表示したい場所に配置 -->
+<section class="note-section">
+    <div class="container">
+      <h2 class="section-title">Studio Xavier 編集部 Archives</h2>
+      <p class="section-sub">Noteにて最新の考察・論考を発信中</p>
+  
+      <!-- ここにNoteの記事が動的に挿入されます -->
+      <div id="note-posts-grid" class="note-grid">
+        <p class="loading-text">最新記事を読み込み中...</p>
+      </div>
+    </div>
+  </section>
+  
+  <style>
+    .note-section {
+      padding: 4rem 0;
+      background: #fafafa;
+    }
+    .note-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .note-card {
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+    .note-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    }
+    .note-thumbnail {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      background-color: #eee;
+    }
+    .note-content {
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .note-date {
+      font-size: 0.75rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+    .note-title {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 0.8rem;
+      color: #1a1a1a;
+    }
+    .note-snippet {
+      font-size: 0.85rem;
+      color: #666;
+      line-height: 1.6;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  </style>
+
+  <!-- Local Story Section -->
+  <section class="section container" id="story">
+    <div class="local-stories">
+      <div class="story-box">
+        <p class="story-quote">「図面上の数字より、夕方の光の入り方や、お隣の挨拶の声の温かさを伝えたい。」</p>
+        <p class="story-author">店主・吉村 誠二（この街で生まれて62年）</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.8;">
+          ネットで何でも探せる時代だからこそ、私たちのような「泥臭い町の不動産屋」が存在する意味があります。
+          良いところだけでなく、坂道のきつさや街灯の明るさまで、隠さずすべてお話しします。
+        </p>
+      </div>
+      <div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--brand-green); margin-bottom: 1rem;">
+          終の棲家探し、お茶を飲みながら話しませんか？
+        </h3>
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.9;">
+          「まだ具体的に買うか決めていない」「どの街が自分に合うか分からない」という段階で大歓迎です。
+          カウンターで温かいお茶をご用意して、この街の歴史や暮らしやすさをマップを広げながらお答えします。
+        </p>
+
+        <div style="background: var(--bg-surface); padding: 1.2rem; border: 1px solid var(--border-color); font-size: 0.88rem;">
+          <strong>📞 お電話でのご相談:</strong> 06-6800-XXXX<br>
+          <span style="color: var(--text-muted);">（水曜定休日／9:00〜18:00）</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">くらしまち不動産</div>
+          <p style="line-height: 1.8;">〒565-0874 大阪府吹田市古江台 4-2-1（阪急北千里駅 徒歩3分）<br>
+          大阪府知事(8)第24XXX号 / (公社)全日本不動産協会会員</p>
+        </div>
+        <div>
+          <h4 style="color:#fff; margin-bottom: 1rem;">ご案内</h4>
+          <p>・初めての街選び相談</p>
+          <p>・実家の売却・相続相談</p>
+          <p>・空き家管理の点検サービス</p>
+        </div>
+        <div>
+          <h4 style="color:#fff; margin-bottom: 1rem;">対応エリア</h4>
+          <p>吹田市・豊中市・箕面市</p>
+          <p>阪急千里線・宝塚線沿線</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; Kurashimachi Real Estate Co., Ltd.</p>
+        <a href="index.html" class="credit-link">Directed & Designed by studio.random</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // 1. Studio Xavier 編集部の Note ID（@不要）を設定してください
+      const NOTE_ID = "studioxavier"; 
+      
+      // 2. 表示したい記事数（例: 3本〜6本）
+      const DISPLAY_COUNT = 3;
+  
+      const rssUrl = `https://note.com/${NOTE_ID}/rss`;
+      const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+  
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const grid = document.getElementById("note-posts-grid");
+          
+          if (!data.items || data.items.length === 0) {
+            grid.innerHTML = "<p>記事がありません。</p>";
+            return;
+          }
+  
+          grid.innerHTML = ""; // ローディング表示のクリア
+  
+          // 指定件数分だけカードを生成
+          data.items.slice(0, DISPLAY_COUNT).forEach(item => {
+            // アイキャッチ画像の抽出（RSSからサムネイルを取得）
+            let thumbnail = item.thumbnail || "";
+            
+            // サムネイルが見つからない場合、本文内の最初のimgタグを探す
+            if (!thumbnail && item.content) {
+              const imgMatch = item.content.match(/<img[^>]+src="([^">]+)"/);
+              if (imgMatch) thumbnail = imgMatch[1];
+            }
+  
+            // 日付の整形 (YYYY.MM.DD)
+            const pubDate = new Date(item.pubDate);
+            const dateStr = `${pubDate.getFullYear()}.${String(pubDate.getMonth() + 1).padStart(2, '0')}.${String(pubDate.getDate()).padStart(2, '0')}`;
+  
+            // HTML要素の構築
+            const card = document.createElement("a");
+            card.href = item.link;
+            card.target = "_blank";
+            card.rel = "noopener noreferrer";
+            card.className = "note-card";
+  
+            card.innerHTML = `
+              ${thumbnail ? `<img src="${thumbnail}" alt="${item.title}" class="note-thumbnail">` : ''}
+              <div class="note-content">
+                <span class="note-date">${dateStr}</span>
+                <h3 class="note-title">${item.title}</h3>
+              </div>
+            `;
+  
+            grid.appendChild(card);
+          });
+        })
+        .catch(error => {
+          console.error("Note RSS loading error:", error);
+          document.getElementById("note-posts-grid").innerHTML = "<p>記事の読み込みに失敗しました。</p>";
+        });
+    });
+  </script>
+
+</body>
+</html>

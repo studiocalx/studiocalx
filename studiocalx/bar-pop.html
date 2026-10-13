@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAR L'ÉTOILE - A4 Table Stand POP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-black: #07080a;
+      --accent-gold: #d4af37;
+      --text-white: #ffffff;
+      --text-sub: #a1a1aa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #1e232d;
+      font-family: 'Noto Serif JP', serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .print-ui {
+      background: #14161b;
+      border: 1px solid var(--accent-gold);
+      padding: 16px 24px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      text-align: center;
+      color: var(--text-white);
+      max-width: 500px;
+    }
+
+    .btn-print {
+      background: var(--accent-gold);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* A4 印刷領域 */
+    .a4-page {
+      width: 210mm;
+      height: 297mm;
+      background-color: var(--bg-black);
+      color: var(--text-white);
+      padding: 25mm 20mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .pop-header {
+      text-align: center;
+      border-bottom: 1px solid var(--accent-gold);
+      padding-bottom: 10mm;
+    }
+
+    .pop-sub {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 0.4em;
+      color: var(--accent-gold);
+      font-size: 11pt;
+      margin-bottom: 4mm;
+    }
+
+    .pop-title {
+      font-family: 'Cinzel', serif;
+      font-size: 34pt;
+      letter-spacing: 0.15em;
+    }
+
+    .pop-center {
+      text-align: center;
+      margin: 15mm 0;
+    }
+
+    .qr-frame {
+      background: #ffffff;
+      padding: 6mm;
+      display: inline-block;
+      border-radius: 4mm;
+    }
+
+    .qr-frame img {
+      width: 55mm;
+      height: 55mm;
+      display: block;
+    }
+
+    .qr-desc {
+      margin-top: 6mm;
+      font-size: 11pt;
+      color: var(--accent-gold);
+      letter-spacing: 0.1em;
+    }
+
+    .pop-features {
+      border-top: 1px stroke rgba(255,255,255,0.1);
+      padding-top: 10mm;
+      font-size: 10pt;
+      color: var(--text-sub);
+      line-height: 2;
+      text-align: center;
+    }
+
+    .pop-footer {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      color: var(--accent-gold);
+      font-size: 10pt;
+      letter-spacing: 0.2em;
+    }
+
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .print-ui { display: none; }
+      .a4-page {
+        box-shadow: none;
+        border: none;
+        width: 210mm;
+        height: 297mm;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="print-ui">
+    <p>BAR L'ÉTOILE 卓上メニューPOP (A4出力用)</p>
+    <button onclick="window.print()" class="btn-print">印刷 / PDF保存を実行</button>
+  </div>
+
+  <div class="a4-page">
+    <div class="pop-header">
+      <p class="pop-sub">DIGITAL MENU ACCESS</p>
+      <h1 class="pop-title">BAR L'ÉTOILE</h1>
+    </div>
+
+    <div class="pop-center">
+      <div class="qr-frame">
+        <!-- QRコード生成API -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://sprightly-lolly-21e204.netlify.app/bar-demo.html" alt="QR Menu">
+      </div>
+      <p class="qr-desc">スマートフォンをかざしてデジタルメニューを表示</p>
+    </div>
+
+    <div class="pop-features">
+      <p>◆ 静寂を保つノータッチ・デジタルメニューシステム</p>
+      <p>◆ お手元でシグネチャーカクテルや限定ウイスキーを鮮明にご覧いただけます</p>
+    </div>
+
+    <div class="pop-footer">
+      DIRECTED BY STUDIO XAVIER
+    </div>
+  </div>
+
+</body>
+</html>
