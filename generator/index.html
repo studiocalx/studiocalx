@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Calx | Instant AI Site Generator & Simulator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        calx: {
+                            dark: '#0f172a',
+                            card: '#1e293b',
+                            accent: '#38bdf8',
+                            rose: '#f43f5e',
+                            amber: '#f59e0b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        /* Glassmorphism effects */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+
+    <!-- Header Navigation -->
+    <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-sky-400 to-rose-500 flex items-center justify-center font-black text-slate-950 text-xl shadow-lg shadow-sky-500/20">
+                    C
+                </div>
+                <div>
+                    <span class="font-extrabold text-lg tracking-wider text-white">Studio Calx</span>
+                    <span class="ml-2 px-2 py-0.5 text-xs font-semibold bg-sky-500/10 text-sky-400 border border-sky-500/20 rounded-full">AI Generator Studio</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span class="hidden md:inline-flex items-center text-xs text-slate-400">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping mr-2"></span>
+                    じゃじゃ馬AI連動シミュレーター稼働中
+                </span>
+                <button onclick="openHelpModal()" class="text-xs text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-600 transition">
+                    <i class="fa-regular fa-circle-question mr-1"></i> 使い方
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace (Split View) -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Panel: Diagnosis Controls & Parameters (5 cols) -->
+        <section class="lg:col-span-5 flex flex-col space-y-6">
+            
+            <div class="glass-panel rounded-2xl p-5 sm:p-6 space-y-6 shadow-2xl relative overflow-hidden border border-slate-800">
+                <div class="absolute -top-12 -right-12 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div>
+                    <h1 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-sky-400"></i>
+                        即時AIサイト生成 ＆ 診断
+                    </h1>
+                    <p class="text-xs text-slate-400 mt-1">
+                        業種とご要望を選ぶだけ。AIの論理性×人間の体温が宿るプロトタイプを即座に自動生成します。
+                    </p>
+                </div>
+
+                <!-- Form Controls -->
+                <form id="generatorForm" onsubmit="event.preventDefault(); generateSitePreview();" class="space-y-4">
+                    
+                    <!-- 1. 屋号 / サービス名 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">
+                            屋号・サービス名 / キャッチコピー（任意）
+                        </label>
+                        <input type="text" id="brandName" placeholder="例: 喫茶カルクス / 心に響く一杯を" 
+                            class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400 transition placeholder-slate-500">
+                    </div>
+
+                    <!-- 2. 業種カテゴリー -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">業種・分野</label>
+                        <select id="businessType" onchange="updateDiagnosticPlan()" 
+                            class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400 transition cursor-pointer">
+                            <option value="cafe">飲食・カフェ・ローカルショップ</option>
+                            <option value="corporate" selected>企業・士業・B2Bサービス</option>
+                            <option value="creator">個人クリエイター・サロン・教室</option>
+                            <option value="lp">新商品・イベント特定LP (集客特化)</option>
+                        </select>
+                    </div>
+
+                    <!-- 3. Webサイトの主な目的 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">主な目的・ゴール</label>
+                        <select id="mainGoal" onchange="updateDiagnosticPlan()" 
+                            class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400 transition cursor-pointer">
+                            <option value="simple">名刺代わりのWebサイト構築（安く速く安全に）</option>
+                            <option value="standard" selected>強みの整理・ブログ等の自社更新・お問い合わせ獲得</option>
+                            <option value="custom">独自の世界観・アニメーション演出・コンバージョン特化</option>
+                        </select>
+                    </div>
+
+                    <!-- 4. カラーパレット選択 -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-2">カラーテーマ</label>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <label class="cursor-pointer border border-slate-700 rounded-xl p-2.5 flex items-center space-x-2 bg-slate-900/50 hover:border-slate-500 transition">
+                                <input type="radio" name="colorPalette" value="dark" checked class="text-sky-500 focus:ring-0">
+                                <span class="w-3.5 h-3.5 rounded-full bg-slate-900 border border-sky-400 inline-block"></span>
+                                <span class="text-slate-200">Midnight Dark</span>
+                            </label>
+                            <label class="cursor-pointer border border-slate-700 rounded-xl p-2.5 flex items-center space-x-2 bg-slate-900/50 hover:border-slate-500 transition">
+                                <input type="radio" name="colorPalette" value="clean" class="text-sky-500 focus:ring-0">
+                                <span class="w-3.5 h-3.5 rounded-full bg-blue-600 inline-block"></span>
+                                <span class="text-slate-200">Clean Corporate</span>
+                            </label>
+                            <label class="cursor-pointer border border-slate-700 rounded-xl p-2.5 flex items-center space-x-2 bg-slate-900/50 hover:border-slate-500 transition">
+                                <input type="radio" name="colorPalette" value="warm" class="text-sky-500 focus:ring-0">
+                                <span class="w-3.5 h-3.5 rounded-full bg-amber-600 inline-block"></span>
+                                <span class="text-slate-200">Warm Craft</span>
+                            </label>
+                            <label class="cursor-pointer border border-slate-700 rounded-xl p-2.5 flex items-center space-x-2 bg-slate-900/50 hover:border-slate-500 transition">
+                                <input type="radio" name="colorPalette" value="neon" class="text-sky-500 focus:ring-0">
+                                <span class="w-3.5 h-3.5 rounded-full bg-rose-500 inline-block"></span>
+                                <span class="text-slate-200">Retro Neon</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 5. トーン＆マナー -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">ブランドトーン</label>
+                        <select id="brandVibe" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white focus:outline-none focus:border-sky-400 transition cursor-pointer">
+                            <option value="modern">Modern & Sleek（先進的でスマート）</option>
+                            <option value="friendly">Friendly & Warm（親しみやすく温かい）</option>
+                            <option value="bold">Bold & Punchy（フックの効いたインパクト重視）</option>
+                            <option value="minimal">Minimalist（シンプルで洗練された余白）</option>
+                        </select>
+                    </div>
+
+                    <!-- 6. Calx特製「ヒューマンスパイス」トグル -->
+                    <div class="pt-2 border-t border-slate-800">
+                        <label class="flex items-start space-x-3 cursor-pointer group">
+                            <input type="checkbox" id="calxSpice" checked class="mt-1 w-4 h-4 rounded border-slate-700 text-rose-500 focus:ring-0 bg-slate-900">
+                            <div>
+                                <span class="text-xs font-bold text-rose-400 group-hover:text-rose-300 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-pepper-hot"></i> Calx Human Spice を追加
+                                </span>
+                                <p class="text-[11px] text-slate-400 mt-0.5 leading-relaxed">
+                                    AIの無難な均質化を防止。「真夏は納期相談」「じゃじゃ馬AI調教済み」など、ディレクターの生々しい人間味と春割的フックをWeb内に注入します。
+                                </p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- リアルタイム診断結果カード -->
+                    <div class="glass-card rounded-xl p-4 border border-sky-500/20 bg-sky-950/20 relative">
+                        <div class="text-[11px] text-sky-400 font-semibold uppercase tracking-wider">推定おすすめプラン診断</div>
+                        <div class="flex items-baseline justify-between mt-1">
+                            <div id="diagPlanTitle" class="text-base font-bold text-white">スタンダードプラン</div>
+                            <div id="diagPlanPrice" class="text-sm font-extrabold text-sky-400">仮説目安: 7万〜10万円</div>
+                        </div>
+                        <div id="diagPlanDesc" class="text-xs text-slate-300 mt-1 leading-relaxed">
+                            情報の整理から相談し、ビジネスの強みを明確化。要件に応じてCMSまたは保守不要な静的構築を選択。
+                        </div>
+                    </div>
+
+                    <!-- 生成実行ボタン -->
+                    <button type="submit" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-sky-500 via-indigo-500 to-rose-500 hover:from-sky-400 hover:to-rose-400 text-slate-950 shadow-lg shadow-sky-500/25 transform hover:-translate-y-0.5 transition active:translate-y-0">
+                        <i class="fa-solid fa-rocket mr-2"></i> AIサイトを生成する (Generate Preview)
+                    </button>
+
+                </form>
+            </div>
+
+        </section>
+
+        <!-- Right Panel: Live Rendered Preview Canvas (7 cols) -->
+        <section class="lg:col-span-7 flex flex-col space-y-4">
+            
+            <!-- Preview Bar Controls -->
+            <div class="glass-panel rounded-xl p-3 flex items-center justify-between border border-slate-800">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                    <span class="text-xs text-slate-400 ml-2 font-mono hidden sm:inline">live-preview-canvas.html</span>
+                </div>
+
+                <!-- Device Toggle -->
+                <div class="flex items-center bg-slate-900 rounded-lg p-1 border border-slate-800">
+                    <button type="button" id="btnViewDesktop" onclick="setDeviceView('desktop')" class="px-2.5 py-1 text-xs font-medium text-white bg-slate-800 rounded-md transition shadow">
+                        <i class="fa-solid fa-desktop mr-1"></i> Desktop
+                    </button>
+                    <button type="button" id="btnViewMobile" onclick="setDeviceView('mobile')" class="px-2.5 py-1 text-xs font-medium text-slate-400 hover:text-white transition">
+                        <i class="fa-solid fa-mobile-screen mr-1"></i> Mobile
+                    </button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="copyGeneratedHTML()" class="px-2.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700" title="HTMLコードをコピー">
+                        <i class="fa-regular fa-copy mr-1"></i> コードコピー
+                    </button>
+                    <button onclick="openFullPreviewModal()" class="px-2.5 py-1.5 text-xs font-semibold text-slate-300 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg transition border border-slate-700" title="全画面表示">
+                        <i class="fa-solid fa-expand mr-1"></i> 全画面
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview Iframe Container -->
+            <div class="flex-1 min-h-[550px] lg:min-h-0 glass-panel rounded-2xl p-2 relative flex items-center justify-center overflow-hidden border border-slate-800">
+                <div id="previewWrapper" class="w-full h-full transition-all duration-300 flex items-center justify-center">
+                    <iframe id="siteIframe" class="w-full h-full min-h-[550px] rounded-xl bg-slate-950 border-0 shadow-2xl transition-all duration-300"></iframe>
+                </div>
+            </div>
+
+            <!-- Bottom CTA Banner -->
+            <div class="glass-panel rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 border border-slate-800">
+                <div class="text-xs text-slate-300">
+                    <span class="text-sky-400 font-bold">💡 気に入ったプロトタイプはありましたか？</span><br>
+                    この構成・トーンをベースに、ディレクターが個別ヒアリングを行い本構築へ繋げます。
+                </div>
+                <button onclick="triggerContactModal()" class="whitespace-nowrap px-4 py-2 text-xs font-bold bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white rounded-lg transition shadow">
+                    プラン相談・お見積もりへ進む <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Modal: Help Modal -->
+    <div id="helpModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full rounded-2xl p-6 border border-slate-800 space-y-4 shadow-2xl">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-circle-info text-sky-400"></i> シミュレーターの使い方
+            </h3>
+            <div class="text-xs text-slate-300 space-y-2 leading-relaxed">
+                <p>1. 左パネルで事業ジャンルや目的、トーンを選択します。</p>
+                <p>2. 選択内容に応じて、適正な「プラン診断結果」がリアルタイム表示されます。</p>
+                <p>3. <strong>「Calx Human Spice」</strong>をONにすると、完璧すぎるAI文章に「真夏は納期相談」「春割的野性」などのリアルな人間味コピーが注入されます。</p>
+                <p>4. 「AIサイトを生成する」を押すと、右側キャンバスに実際に動く1ページWebが生成されます。</p>
+            </div>
+            <button onclick="closeHelpModal()" class="w-full py-2 bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs rounded-xl transition">
+                閉じる
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal: Contact/Plan Confirm Modal -->
+    <div id="contactModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="glass-panel max-w-lg w-full rounded-2xl p-6 border border-slate-800 space-y-5 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-paper-plane text-rose-400"></i> Studio Calx へのお問い合わせ
+                </h3>
+                <button onclick="closeContactModal()" class="text-slate-400 hover:text-white text-lg">&times;</button>
+            </div>
+            
+            <div class="text-xs text-slate-300 space-y-3">
+                <div id="modalDiagSummary" class="p-3 bg-slate-900 rounded-xl border border-slate-800 text-sky-300 font-mono text-[11px]">
+                    <!-- Dynamic Summary -->
+                </div>
+                <p>生成されたプロトタイプの構成・アイデアを保持したまま、ディレクター（加藤）へご相談いただけます。</p>
+                
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-400 mb-1">お名前 / 貴社名</label>
+                    <input type="text" placeholder="山田 太郎" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-400 mb-1">メールアドレス</label>
+                    <input type="email" placeholder="example@email.com" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400">
+                </div>
+                <div>
+                    <label class="block text-[11px] font-semibold text-slate-400 mb-1">メッセージ・ご要望</label>
+                    <textarea rows="3" placeholder="シミュレーターで生成したプロトタイプを元に、見積もりと相談をお願いしたいです。" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-sky-400"></textarea>
+                </div>
+            </div>
+
+            <div class="p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl text-[11px] text-rose-300">
+                ※お申込みが重なる時期は、少しお待ちいただくこともあります（真夏は特に無理しない方針です）。
+            </div>
+
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeContactModal()" class="px-4 py-2 text-xs text-slate-400 hover:text-white">キャンセル</button>
+                <button onclick="submitContact()" class="px-5 py-2 text-xs font-bold bg-rose-500 hover:bg-rose-400 text-white rounded-lg transition shadow-lg shadow-rose-500/20">
+                    送信する（仮想定型）
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // State Management
+        let currentGeneratedHTML = '';
+
+        // Initialize on page load
+        window.onload = function() {
+            updateDiagnosticPlan();
+            generateSitePreview();
+        };
+
+        // Dynamic Diagnostic Calculation
+        function updateDiagnosticPlan() {
+            const goal = document.getElementById('mainGoal').value;
+            const business = document.getElementById('businessType').value;
+
+            const titleEl = document.getElementById('diagPlanTitle');
+            const priceEl = document.getElementById('diagPlanPrice');
+            const descEl = document.getElementById('diagPlanDesc');
+
+            if (goal === 'simple') {
+                titleEl.innerText = 'シンプルプラン';
+                priceEl.innerText = '仮説目安: 5万〜7万円';
+                descEl.innerText = '手元の素材・原稿を元に、名刺代わりのWebサイトを爆速・安全に構築。更新コストやセキュリティリスクを抑えた軽量構成。';
+            } else if (goal === 'standard') {
+                titleEl.innerText = 'スタンダードプラン';
+                priceEl.innerText = '仮説目安: 7万〜10万円';
+                descEl.innerText = '情報の整理から一緒に相談。強みを言葉とデザインで引き出し、要件に応じたCMS構築または保守ゼロの静的サイトを選択。';
+            } else {
+                titleEl.innerText = 'カスタム / ハイスペックプラン';
+                priceEl.innerText = '仮説目安: 10万円〜';
+                descEl.innerText = 'オーダーメイドのアニメーション演出、独自LP、外部API連携などを盛り込んだ差別化重視のコンバージョン特化構成。';
+            }
+        }
+
+        // Generate Site HTML based on Controls
+        function generateSitePreview() {
+            const brandName = document.getElementById('brandName').value.trim() || 'Studio Calx Project';
+            const businessType = document.getElementById('businessType').value;
+            const goal = document.getElementById('mainGoal').value;
+            const colorPalette = document.querySelector('input[name="colorPalette"]:checked').value;
+            const vibe = document.getElementById('brandVibe').value;
+            const spiceEnabled = document.getElementById('calxSpice').checked;
+
+            // Color Themes
+            let bgClass = 'bg-slate-950 text-slate-100';
+            let cardBg = 'bg-slate-900 border-slate-800';
+            let primaryBtn = 'bg-sky-500 hover:bg-sky-400 text-slate-950';
+            let accentColor = '#38bdf8';
+
+            if (colorPalette === 'clean') {
+                bgClass = 'bg-slate-900 text-slate-100';
+                cardBg = 'bg-slate-800/80 border-slate-700';
+                primaryBtn = 'bg-blue-600 hover:bg-blue-500 text-white';
+                accentColor = '#2563eb';
+            } else if (colorPalette === 'warm') {
+                bgClass = 'bg-stone-950 text-stone-100';
+                cardBg = 'bg-stone-900 border-stone-800';
+                primaryBtn = 'bg-amber-600 hover:bg-amber-500 text-white';
+                accentColor = '#d97706';
+            } else if (colorPalette === 'neon') {
+                bgClass = 'bg-zinc-950 text-zinc-100';
+                cardBg = 'bg-zinc-900/90 border-rose-500/30';
+                primaryBtn = 'bg-rose-500 hover:bg-rose-400 text-white';
+                accentColor = '#f43f5e';
+            }
+
+            // Human Spice Copy Snippets
+            const spiceBanner = spiceEnabled ? `
+                <div style="background: rgba(244,63,94,0.1); border: 1px solid rgba(244,63,94,0.3); color: #fda4af; padding: 8px 16px; border-radius: 9999px; text-align: center; font-size: 11px; font-weight: 600; margin-bottom: 20px;">
+                    🌶️ Calx Director's Note: 「じゃじゃ馬AIを人間が調教済み。真夏のお申し込み増加時は納期ご相談となります」
+                </div>
+            ` : '';
+
+            const spiceFooterNotice = spiceEnabled ? `
+                <p style="font-size: 11px; opacity: 0.6; margin-top: 12px;">
+                    ※「春割」のような野生的フックと生の人間味を大切にしています。無難な優等生コピーにはまとめません。
+                </p>
+            ` : '';
+
+            // Construct Full HTML String for Preview
+            const generatedDoc = `
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${brandName}</title>
+    <script src="https://cdn.tailwindcss.com"><\/script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="${bgClass} font-sans min-h-screen antialiased">
+    
+    <!-- Navigation -->
+    <nav class="border-b border-white/10 px-6 py-4 flex items-center justify-between">
+        <div class="text-lg font-black tracking-wide">${brandName}</div>
+        <div class="space-x-4 text-xs opacity-80 hidden sm:block">
+            <a href="#about" class="hover:opacity-100">About</a>
+            <a href="#features" class="hover:opacity-100">Features</a>
+            <a href="#contact" class="hover:opacity-100">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="px-6 py-16 sm:py-24 max-w-4xl mx-auto text-center space-y-6">
+        ${spiceBanner}
+        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">
+            ${brandName}
+        </h1>
+        <p class="text-sm sm:text-base opacity-80 max-w-2xl mx-auto leading-relaxed">
+            AIのロジックと人間の体温（しずる感）を掛け合わせ、本当に伝えたい魅力を届けるプロトタイプWebサイトです。
+        </p>
+        <div class="pt-4 flex justify-center gap-3">
+            <a href="#contact" class="px-6 py-3 rounded-xl font-bold text-xs ${primaryBtn} shadow-lg transition">
+                お問い合わせ・ご相談
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="px-6 py-12 max-w-5xl mx-auto">
+        <h2 class="text-xs uppercase tracking-widest text-center opacity-60 mb-8 font-bold">Key Strengths</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="${cardBg} p-6 rounded-2xl border">
+                <i class="fa-solid fa-brain text-2xl mb-3" style="color: ${accentColor};"></i>
+                <h3 class="font-bold text-base mb-2">論理的な構成・情報設計</h3>
+                <p class="text-xs opacity-75 leading-relaxed">AIを活用して構造と導線をクリアに整理。迷わせないユーザー体験をつくります。</p>
+            </div>
+            <div class="${cardBg} p-6 rounded-2xl border">
+                <i class="fa-solid fa-heart-pulse text-2xl mb-3" style="color: ${accentColor};"></i>
+                <h3 class="font-bold text-base mb-2">人間の体温と余白</h3>
+                <p class="text-xs opacity-75 leading-relaxed">均質化された綺麗な言葉に逃げず、引っかかりのある生の言葉や遊び心を残します。</p>
+            </div>
+            <div class="${cardBg} p-6 rounded-2xl border">
+                <i class="fa-solid fa-shield-halved text-2xl mb-3" style="color: ${accentColor};"></i>
+                <h3 class="font-bold text-base mb-2">実質本位の誠実運用</h3>
+                <p class="text-xs opacity-75 leading-relaxed">不要な固定費や複雑なCMSを押し付けず、事業段階に合わせた最適な技術を選択。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="border-t border-white/10 px-6 py-10 text-center text-xs opacity-70 mt-12">
+        <p>© ${new Date().getFullYear()} ${brandName} | Generated by Studio Calx Simulator</p>
+        ${spiceFooterNotice}
+    </footer>
+
+</body>
+</html>
+            `;
+
+            currentGeneratedHTML = generatedDoc;
+
+            // Render into iframe
+            const iframe = document.getElementById('siteIframe');
+            const doc = iframe.contentDocument || iframe.contentWindow.document;
+            doc.open();
+            doc.write(generatedDoc);
+            doc.close();
+        }
+
+        // Viewport Switcher
+        function setDeviceView(view) {
+            const wrapper = document.getElementById('previewWrapper');
+            const btnDesktop = document.getElementById('btnViewDesktop');
+            const btnMobile = document.getElementById('btnViewMobile');
+
+            if (view === 'mobile') {
+                wrapper.classList.remove('w-full');
+                wrapper.classList.add('w-[375px]');
+                btnMobile.classList.add('bg-slate-800', 'text-white');
+                btnMobile.classList.remove('text-slate-400');
+                btnDesktop.classList.remove('bg-slate-800', 'text-white');
+                btnDesktop.classList.add('text-slate-400');
+            } else {
+                wrapper.classList.remove('w-[375px]');
+                wrapper.classList.add('w-full');
+                btnDesktop.classList.add('bg-slate-800', 'text-white');
+                btnDesktop.classList.remove('text-slate-400');
+                btnMobile.classList.remove('bg-slate-800', 'text-white');
+                btnMobile.classList.add('text-slate-400');
+            }
+        }
+
+        // Copy HTML Code
+        function copyGeneratedHTML() {
+            if (!currentGeneratedHTML) return;
+            
+            // Execute copy fallback compatible with iframe constraints
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = currentGeneratedHTML;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+
+            alert("生成された1ページWebサイトのHTMLコードをクリップボードにコピーしました！");
+        }
+
+        // Full Preview Modal
+        function openFullPreviewModal() {
+            const newWin = window.open("", "_blank");
+            if (newWin) {
+                newWin.document.write(currentGeneratedHTML);
+                newWin.document.close();
+            } else {
+                alert("ポップアップブロックが有効になっている可能性があります。解除して再度お試しください。");
+            }
+        }
+
+        // Contact Modal Logic
+        function triggerContactModal() {
+            const planTitle = document.getElementById('diagPlanTitle').innerText;
+            const planPrice = document.getElementById('diagPlanPrice').innerText;
+            const brand = document.getElementById('brandName').value || '未設定';
+
+            document.getElementById('modalDiagSummary').innerHTML = `
+                📌 診断結果: <strong>${planTitle}</strong> (${planPrice})<br>
+                🏷️ 仮設定屋号: ${brand}
+            `;
+
+            document.getElementById('contactModal').classList.remove('hidden');
+            document.getElementById('contactModal').classList.add('flex');
+        }
+
+        function closeContactModal() {
+            document.getElementById('contactModal').classList.remove('flex');
+            document.getElementById('contactModal').classList.add('hidden');
+        }
+
+        function submitContact() {
+            alert("お問い合わせ内容（定型テスト）を送信しました！編集長より折り返しご連絡いたします。");
+            closeContactModal();
+        }
+
+        // Help Modal Logic
+        function openHelpModal() {
+            document.getElementById('helpModal').classList.remove('hidden');
+            document.getElementById('helpModal').classList.add('flex');
+        }
+
+        function closeHelpModal() {
+            document.getElementById('helpModal').classList.remove('flex');
+            document.getElementById('helpModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
