@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Calx - 柔軟なWeb制作・AIクリエイティブ</title>
+    <!-- Google Fonts: DM Sans & Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        customBg: '#F7FAF5',
+                        charcoal: '#1E221E',
+                        limeAccent: '#CCFF00',
+                        terracotta: '#D96B43'
+                    },
+                    fontFamily: {
+                        sans: ['"DM Sans"', '"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .outline-text {
+            -webkit-text-stroke: 2px #1E221E;
+            color: transparent;
+            transition: all 0.3s ease;
+        }
+        .outline-text:hover {
+            color: #1E221E;
+        }
+    </style>
+</head>
+<body class="bg-[#F7FAF5] text-[#1E221E] font-sans antialiased selection:bg-[#CCFF00] selection:text-[#1E221E]">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full bg-[#F7FAF5]/90 backdrop-blur-md z-50 border-b border-[#1E221E]/10">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-xl tracking-tighter">Studio Calx</span>
+                <span class="w-2.5 h-2.5 bg-[#CCFF00] rounded-full inline-block"></span>
+            </div>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#about" class="hover:opacity-60 transition-opacity">About</a>
+                <a href="#services" class="hover:opacity-60 transition-opacity">Services</a>
+                <a href="#works" class="hover:opacity-60 transition-opacity">Works</a>
+            </nav>
+            <a href="#contact" class="px-5 py-2.5 bg-[#1E221E] text-[#F7FAF5] text-sm font-medium rounded-full hover:bg-[#CCFF00] hover:text-[#1E221E] transition-colors">
+                Contact
+            </a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="pt-36 pb-20 px-6 max-w-7xl mx-auto min-h-[90vh] flex flex-col justify-between">
+        <div>
+            <div class="flex justify-between items-center text-xs tracking-widest uppercase text-[#1E221E]/60 mb-8 border-b border-[#1E221E]/10 pb-4">
+                <span>Web Design Studio</span>
+                <span>Tokyo / Japan</span>
+            </div>
+            <!-- Bold Typography -->
+            <div class="my-12">
+                <h1 class="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-none flex flex-wrap gap-x-6 gap-y-2">
+                    <span>FLEXIBLE</span>
+                    <span class="outline-text relative">
+                        CREATIVITY
+                        <span class="absolute -top-4 -right-6 text-2xl bg-[#CCFF00] text-[#1E221E] px-2 py-0.5 rounded font-sans text-sm font-bold">×</span>
+                    </span>
+                </h1>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-end pt-12 border-t border-[#1E221E]/10">
+            <div>
+                <p class="text-lg md:text-xl font-medium leading-relaxed">
+                    AIの技術と、ディレクターの経験。<br>
+                    ふたつの力をクロスさせ、もっと自由で、もっと柔軟なWeb制作へ。
+                </p>
+            </div>
+            <div class="flex justify-start md:justify-end">
+                <div class="w-24 h-24 rounded-full border border-[#1E221E]/20 flex items-center justify-center animate-bounce text-xs uppercase tracking-widest">
+                    Scroll ↓
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 px-6 bg-[#1E221E] text-[#F7FAF5]">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div>
+                <span class="text-xs font-mono uppercase text-[#CCFF00] tracking-widest block mb-4">Concept</span>
+                <h2 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-8">
+                    型にハマらない、<br>新しい制作のスタンダード。
+                </h2>
+                <p class="text-white/80 leading-relaxed mb-6">
+                    単に綺麗なデザインを並べるだけの時代は終わりました。Studio Calxは、最先端のAI生成エンジンと、熟練ディレクターの現場での洞察力を掛け合わせ、本質的な課題解決とスピードを両立させます。
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-white/5 p-8 border border-white/10 rounded-2xl">
+                    <span class="text-3xl font-bold text-[#CCFF00] block mb-2">01</span>
+                    <h3 class="font-bold text-lg mb-2">AI Speed</h3>
+                    <p class="text-sm text-white/60">StitchやFigmaを活用した爆速のビジュアル生成とプロトタイピング。</p>
+                </div>
+                <div class="bg-white/5 p-8 border border-white/10 rounded-2xl">
+                    <span class="text-3xl font-bold text-[#CCFF00] block mb-2">02</span>
+                    <h3 class="font-bold text-lg mb-2">Human Insight</h3>
+                    <p class="text-sm text-white/60">対面ヒアリングから導く、的確な要件定義とコンプライアンス設計。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-24 px-6 max-w-7xl mx-auto">
+        <div class="mb-16">
+            <span class="text-xs font-mono uppercase tracking-widest text-[#1E221E]/60 block mb-4">Services</span>
+            <h2 class="text-4xl font-bold tracking-tight">何を提供するのか</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="p-8 bg-white border border-[#1E221E]/10 rounded-2xl hover:border-[#1E221E] transition-colors">
+                <span class="text-sm font-mono text-[#1E221E]/40 mb-4 block">01</span>
+                <h3 class="text-xl font-bold mb-3">Web Design</h3>
+                <p class="text-sm text-[#1E221E]/70 leading-relaxed">
+                    ユーザーの心を動かし、ブランドの価値を最大限に伝える洗練されたUI/UXデザインの構築。
+                </p>
+            </div>
+            <div class="p-8 bg-white border border-[#1E221E]/10 rounded-2xl hover:border-[#1E221E] transition-colors">
+                <span class="text-sm font-mono text-[#1E221E]/40 mb-4 block">02</span>
+                <h3 class="text-xl font-bold mb-3">Development</h3>
+                <p class="text-sm text-[#1E221E]/70 leading-relaxed">
+                    ViteやCursorを活用した堅牢かつ高速なフロントエンド実装とモダンなシステム連携。
+                </p>
+            </div>
+            <div class="p-8 bg-white border border-[#1E221E]/10 rounded-2xl hover:border-[#1E221E] transition-colors">
+                <span class="text-sm font-mono text-[#1E221E]/40 mb-4 block">03</span>
+                <h3 class="text-xl font-bold mb-3">AI Creative</h3>
+                <p class="text-sm text-[#1E221E]/70 leading-relaxed">
+                    最新の生成AIツールを駆使した、プロトタイピングの高速化とカスタムプロンプト構築。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Works Section -->
+    <section id="works" class="py-24 px-6 bg-[#EFEEE9]">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-16">
+                <span class="text-xs font-mono uppercase tracking-widest text-[#1E221E]/60 block mb-4">Works & Gallery</span>
+                <h2 class="text-4xl font-bold tracking-tight">制作実績・事例ギャラリー</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group cursor-pointer">
+                    <div class="bg-[#1E221E]/10 h-64 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
+                        <span class="font-bold text-[#1E221E]/40">Real Estate LP</span>
+                    </div>
+                    <h3 class="font-bold text-lg">地域密着型不動産 公式サイト</h3>
+                    <p class="text-sm text-[#1E221E]/60">UI/UX Design & Frontend</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="bg-[#1E221E]/10 h-64 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
+                        <span class="font-bold text-[#1E221E]/40">AI Platform</span>
+                    </div>
+                    <h3 class="font-bold text-lg">AI学習メディアプラットフォーム</h3>
+                    <p class="text-sm text-[#1E221E]/60">Branding & Direction</p>
+                </div>
+                <div class="group cursor-pointer">
+                    <div class="bg-[#1E221E]/10 h-64 rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center">
+                        <span class="font-bold text-[#1E221E]/40">Corporate Site</span>
+                    </div>
+                    <h3 class="font-bold text-lg">都市開発プランニング コーポレート</h3>
+                    <p class="text-sm text-[#1E221E]/60">Full Production</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact CTA Section -->
+    <section id="contact" class="py-32 px-6 max-w-5xl mx-auto text-center">
+        <h2 class="text-4xl md:text-6xl font-black tracking-tight mb-6">
+            Let's build together.
+        </h2>
+        <p class="text-lg text-[#1E221E]/70 mb-10 max-w-2xl mx-auto">
+            AIと人間のクロスが生み出す新しい制作体験を、あなたのプロジェクトでも体験しませんか？
+        </p>
+        <a href="mailto:info@example.com" class="inline-block px-10 py-5 bg-[#CCFF00] text-[#1E221E] font-bold text-lg rounded-full hover:bg-[#1E221E] hover:text-[#F7FAF5] transition-colors shadow-lg">
+            メールでお問い合わせする →
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#1E221E]/10 py-12 px-6 text-center text-xs text-[#1E221E]/60">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <p>&copy; Studio Calx. All Rights Reserved. [SAMPLE]</p>
+            <p>Designed with AI & Director Experience.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
