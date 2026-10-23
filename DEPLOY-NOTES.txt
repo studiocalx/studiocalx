@@ -1,0 +1,16 @@
+studioCALX — Cloudflare Pages upload package
+
+IMPORTANT: This folder is the site root. Upload the CONTENTS of this folder, not the parent folder itself.
+
+The root must contain index.html and the assets/ folder. The main pages reference assets/style.css and assets/script.js using relative paths.
+
+Suggested safe process:
+1. Keep the existing live site unchanged until this package is checked.
+2. In Cloudflare Pages, use a separate preview/project or preview deployment if available.
+3. Upload the contents of this folder so index.html is at the deployment root.
+4. Open the resulting URL on desktop and smartphone. Check the six pages, mobile menu, internal links, and Note link.
+5. Only replace the live deployment after verification.
+
+Known limitations: the contact form is a demo and does not send messages. Google Fonts and the archived Gemini page's Tailwind CDN require internet access.
+
+This package has been statically checked for local file/link references. A real Cloudflare deployment and physical smartphone test have NOT been performed.
