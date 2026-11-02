@@ -11,3 +11,21 @@
 :focus-visible{outline:2px solid var(--orange);outline-offset:4px}
 .menu-toggle{min-width:44px;min-height:44px}
 @media(max-width:650px){.mobile-nav a{min-height:54px}.brand{font-size:17px;gap:9px}.brand small{letter-spacing:.1em}}
+
+/* studioCALX v2.5 refinement: improve reading comfort and clarify hierarchy. */
+body{font-size:16px;line-height:1.85}
+.section-head p,.intro-copy,.body-copy,.manifesto-copy,.feature-copy p,.contact-info>p{font-size:15px;line-height:1.95;color:#55574f}
+.principle p,.service-card p,.value-item p,.process-row>p,.case-content>p{font-size:14px;line-height:1.9}
+.page-intro .intro-copy{max-width:590px}
+.footer-note{max-width:460px;font-size:13px;line-height:1.9;color:#aeb0a5}
+.hero-lede{font-size:17px;line-height:2}
+@media(min-width:901px){
+  .section-head{grid-template-columns:.8fr 1.2fr;gap:5vw}
+  .section-head h2,.page-intro h1{font-size:clamp(44px,5.2vw,68px)}
+  .hero h1{font-size:clamp(58px,7.2vw,104px)}
+  .page-intro .intro-copy{font-size:17px}
+}
+@media(max-width:650px){
+  body{font-size:15px}
+  .section-head p,.intro-copy,.body-copy,.manifesto-copy,.feature-copy p,.contact-info>p{font-size:14px}
+}
