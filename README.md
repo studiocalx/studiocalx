@@ -48,3 +48,14 @@ Open `index.html` in a browser. No build step is required.
 - Kept Back Issues out of the initial Works listing and retained the archived Gemini HTML snapshot as a separate historical artifact.
 - The Note links in the main site point to https://note.com/studiocalx.
 - No live deployment was performed. Static link and source checks were performed on this local package; browser/device visual testing and real form submission remain unverified.
+
+
+## Works / CALX LAB restructuring (2026-11-09)
+- Reorganized Works into Web Studies, CALX LAB, and FIELD NOTES.
+- Existing industry pages are labeled as demos/concept samples, not client delivery records.
+- Added links to the local demo pages, Generator, A4 editor, archived first AI site, and WordPress editorial archive.
+- Added a narrowly scoped CSS safety rule for `#price` / `.price-section` / `[data-section="price"]`.
+- The current homepage source contains no `#price` section or Price navigation item; the rule is a safeguard for a future/reintroduced section. It does not hide prices inside business demo pages.
+- CALX LAB uses Obsidian Black `#0F0F10` and Flat Yellow `#FFCC00` as a distinct experimental-area treatment. The main site's existing paper/acid visual identity is retained.
+- The uploaded source did not contain an identifiable separate “ひだまり幼稚園” mobile-revision file. `nursery.html` is titled “SUNSHINE KIDS ACADEMY” and is labeled accordingly; it is not renamed as a Hidamari delivery.
+- Static source/link checks only. No Cloudflare deployment, live-site validation, or physical smartphone testing has been performed.
