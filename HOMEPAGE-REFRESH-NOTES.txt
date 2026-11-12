@@ -1,0 +1,28 @@
+studioCALX homepage refresh preview
+Date: 2026-11-11
+Base source: studiocalx-main20261110.zip (uploaded 2026-11-10)
+
+Changes in this preview
+- Replaced the homepage hero headline with the supplied copy: 「最適解のホームページを。」
+- Kept the user's full copy structure and key message about production experience and AI direction.
+- Preserved the existing rotating/orbital hero artwork; adjusted its scale and spacing only.
+- Added a right-to-left horizontal showcase of nine existing local demo screenshots.
+- Each primary showcase card links to its corresponding local demo page.
+- Added pause/resume control, pause-on-hover/focus, keyboard scrolling, mobile swipe scrolling, and reduced-motion behavior.
+- Added explicit disclosure that the displayed work is self-initiated concept/demo material.
+- Updated the homepage title and description metadata.
+
+Validation performed
+- Checked that all local image paths referenced by the homepage exist.
+- Checked that all local page links referenced by the homepage resolve to files in this ZIP.
+- Checked for duplicate HTML IDs (none found).
+- Ran `node --check` on assets/script.js successfully.
+
+Not performed
+- No deployment to GitHub or Cloudflare Pages.
+- No production site changes.
+- No real-device visual QA or browser interaction QA; please review the preview before approval.
+- No changes to other pages or existing service/works wording.
+
+Important
+This is a preview package based on the supplied ZIP. It does not include any changes made remotely after that ZIP was created.
