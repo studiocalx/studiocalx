@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.process-row').forEach(row=>{const toggleRow=()=>{const isOpen=row.getAttribute('aria-expanded')==='true';document.querySelectorAll('.process-row').forEach(r=>r.setAttribute('aria-expanded','false'));row.setAttribute('aria-expanded',String(!isOpen));};row.addEventListener('click',toggleRow);row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggleRow();}});});
   const heroCycle=document.querySelector('[data-hero-cycle]');
   if(heroCycle && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){const words=['Webで、','事業の、','サービスの、'];let i=0;window.setInterval(()=>{i=(i+1)%words.length;const fade=heroCycle.animate([{opacity:1,transform:'translateY(0)'},{opacity:0,transform:'translateY(8px)'}],{duration:220,fill:'forwards'});fade.onfinish=()=>{heroCycle.textContent=words[i];heroCycle.animate([{opacity:0,transform:'translateY(-8px)'},{opacity:1,transform:'translateY(0)'}],{duration:300,fill:'forwards'});};},4200);}
+  const showcase=document.querySelector('.site-showcase');
+  const showcaseToggle=document.querySelector('.showcase-toggle');
+  const showcaseWindow=document.querySelector('.showcase-window');
+  if(showcase&&showcaseToggle){showcaseToggle.addEventListener('click',()=>{const paused=showcase.classList.toggle('is-paused');showcaseToggle.setAttribute('aria-pressed',String(paused));showcaseToggle.textContent=paused?'再生':'一時停止';});}
+  if(showcaseWindow){showcaseWindow.addEventListener('keydown',e=>{if(e.key==='ArrowRight')showcaseWindow.scrollBy({left:280,behavior:'smooth'});if(e.key==='ArrowLeft')showcaseWindow.scrollBy({left:-280,behavior:'smooth'});});}
   const form=document.querySelector('#contact-form');
   if(form){form.addEventListener('submit',e=>{e.preventDefault();const result=form.querySelector('.form-result');result.classList.add('show');result.textContent='このデモでは送信処理を行いません。内容をコピーして、正式な連絡先が決まった段階で送信先を設定してください。';});}
   const copy=document.querySelector('[data-copy-email]');if(copy){copy.addEventListener('click',()=>{const val=copy.getAttribute('data-copy-email');if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(val).then(()=>{copy.textContent='コピーしました'}).catch(()=>{});}else{window.prompt('コピーしてください',val);}});}
