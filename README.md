@@ -66,3 +66,11 @@ Open `index.html` in a browser. No build step is required.
 - `/generator/`: access-code entry; `/generator/workspace.html`: existing Generator UI retained with revised wording.
 - `functions/generator/`: Cloudflare Pages Functions for server-side shared-code gate. Configure secrets per `GENERATOR-ACCESS-SETUP.txt` before deployment.
 - This is a local preview package only; it has not been deployed or browser/device tested against Cloudflare.
+
+
+## Web3Forms contact form integration (2026-11-18)
+- Connected `contact.html` to Web3Forms using the studioCALX public Form Access Key supplied by the user.
+- Added a prefilled subject/from-name, Web3Forms `botcheck` field, required email/message validation, and asynchronous JSON submission with success/error feedback.
+- Name remains optional. The form does not clear its fields when submission fails.
+- Recipient configuration in the Web3Forms dashboard and actual delivery to the intended inbox still require user-side confirmation and a live test submission.
+- No Cloudflare deployment was performed.
