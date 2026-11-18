@@ -59,3 +59,10 @@ Open `index.html` in a browser. No build step is required.
 - CALX LAB uses Obsidian Black `#0F0F10` and Flat Yellow `#FFCC00` as a distinct experimental-area treatment. The main site's existing paper/acid visual identity is retained.
 - The uploaded source did not contain an identifiable separate “ひだまり幼稚園” mobile-revision file. `nursery.html` is titled “SUNSHINE KIDS ACADEMY” and is labeled accordingly; it is not renamed as a Hidamari delivery.
 - Static source/link checks only. No Cloudflare deployment, live-site validation, or physical smartphone testing has been performed.
+
+
+## 2026-11-16 local prototype additions
+- `/workflow/`: standalone Webサイト制作フロー page; separate from Generator workspace.
+- `/generator/`: access-code entry; `/generator/workspace.html`: existing Generator UI retained with revised wording.
+- `functions/generator/`: Cloudflare Pages Functions for server-side shared-code gate. Configure secrets per `GENERATOR-ACCESS-SETUP.txt` before deployment.
+- This is a local preview package only; it has not been deployed or browser/device tested against Cloudflare.

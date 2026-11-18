@@ -1,0 +1,15 @@
+studioCALX Generator — Cloudflare Pages access setup
+
+This build uses Cloudflare Pages Functions for server-side access-code validation. The code is NOT embedded in browser JavaScript.
+
+Before deploying:
+1. In Cloudflare Pages > Settings > Variables and Secrets, add GENERATOR_ACCESS_CODE (encrypted secret) and GENERATOR_SESSION_SECRET (encrypted secret, long random value).
+2. Ensure Functions are enabled for this Pages project and that the project root is this folder. The root-level `functions/_middleware.js` protects static files under `/generator/*` as well as Function routes.
+3. This package must be deployed through Git integration or Wrangler; Cloudflare Dashboard Direct Upload does not support Pages Functions. See Cloudflare Pages Functions documentation.
+4. Set both secrets in the Preview environment first, test there, then configure Production only when ready.
+5. Test /generator/ with a wrong code, correct code, direct /generator/workspace.html access, expired cookie, and mobile browser.
+6. Do not publish the access code in documentation or source control.
+
+Session: signed HttpOnly + Secure + SameSite=Lax cookie, scoped to /generator, expires after 8 hours. This is a lightweight shared-code gate, not per-user identity management, audit logging, or rate-limiting. Add Cloudflare rate limiting / Access policy if stronger controls are required.
+
+No Cloudflare variables, deployment settings, production site, or GitHub repository were changed by this local edit.
