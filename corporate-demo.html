@@ -352,6 +352,32 @@
       opacity: 1;
       transform: translateY(0);
     }
+  
+    /* LIGHT PRESENTATION OVERRIDES — client-facing readability */
+    :root {
+      --bg-dark: #f4f7fb;
+      --bg-card: #ffffff;
+      --text-main: #202a3a;
+      --text-muted: #596779;
+      --border-line: rgba(32, 42, 58, 0.14);
+    }
+    .header { background: rgba(255,255,255,.94); box-shadow: 0 4px 24px rgba(25,40,60,.06); }
+    .brand-logo { color: #17243a; }
+    .nav-menu a { color: #536176; }
+    .nav-menu a:hover { color: var(--accent-blue); }
+    .hero-heading {
+      background: linear-gradient(135deg, #17243a 0%, #52647d 100%);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    .hero-title-bg { color: rgba(23,36,58,.055); }
+    .hero-bg-img { opacity: .13; filter: contrast(105%) brightness(115%); }
+    .hero-glow { opacity: .45; }
+    .value-card { box-shadow: 0 8px 28px rgba(25,40,60,.06); }
+    .value-img-wrap img { opacity: .88; }
+    .company-img { box-shadow: -16px 16px 0 rgba(0,102,255,.12); }
+    .recruit-box { background: linear-gradient(135deg, rgba(0,102,255,.08), rgba(0,190,210,.07)); }
+    .footer { color: #596779; }
+
   </style>
 <meta name="robots" content="noindex,follow">
 </head>
