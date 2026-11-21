@@ -480,6 +480,35 @@
     }
 
     .mysoku-foot img { width: 22mm; height: 22mm; }
+  
+    /* LIGHT PRESENTATION OVERRIDES — calm, legible real-estate editorial */
+    :root {
+      --bg: #f5f3ed;
+      --bg-elev: #fffdf8;
+      --bg-card: #ffffff;
+      --line: rgba(111, 91, 49, .22);
+      --text: #292923;
+      --muted: #69685f;
+    }
+    body { background: #f5f3ed; color: #292923; }
+    header, .header, .topbar {
+      background: rgba(255,253,248,.96);
+      color: #292923;
+      box-shadow: 0 4px 24px rgba(35,32,24,.06);
+    }
+    header a, .header a, .topbar a { color: #292923; }
+    .property, .panel, .consult .panel, .modal-card {
+      background: #fffdf8;
+      color: #292923;
+      border-color: rgba(111,91,49,.2);
+      box-shadow: 0 10px 30px rgba(35,32,24,.07);
+    }
+    .property .meta, .muted, .section-head p { color: #69685f; }
+    .mysoku-sheet { background: #fff; color: #292923; }
+    .mysoku-sheet th { color: #625f54; }
+    input, select, textarea { background: #fff; color: #292923; border-color: #c9c4b7; }
+    footer { color: #69685f; }
+
   </style>
 <meta name="robots" content="noindex,follow">
 </head>
